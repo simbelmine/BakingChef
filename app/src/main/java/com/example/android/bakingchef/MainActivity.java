@@ -8,8 +8,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.View;
 
@@ -49,15 +47,6 @@ public class MainActivity extends AppCompatActivity implements RecipeOnClickList
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitle(getTitle());
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
         View recyclerView = findViewById(R.id.item_list);
         assert recyclerView != null;
@@ -105,10 +94,6 @@ public class MainActivity extends AppCompatActivity implements RecipeOnClickList
         @Override
         protected Void doInBackground(Void... params) {
             Type listType = new TypeToken<ArrayList<Recipe>>(){}.getType();
-
-//            Log.v(TAG, "list type : " + listType);
-//            Log.v(TAG, "JSON : " + loadJSONfromAssets());
-
             recipeList = new GsonBuilder().create().fromJson(loadJSONfromAssets(), listType);
 
             return null;
