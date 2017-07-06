@@ -1,24 +1,35 @@
 package com.example.android.bakingchef;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.android.bakingchef.dummy.DummyContent;
+import com.example.android.bakingchef.models.Ingredient;
+import com.example.android.bakingchef.models.Recipe;
+import com.example.android.bakingchef.models.Step;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.List;
+import java.util.Scanner;
 
 
 public class RecipesListAdapter extends RecyclerView.Adapter<RecipesViewHolder> {
 
-    private final List<DummyContent.DummyItem> mValues;
+    //    private final List<DummyContent.DummyItem> mValues;
+    private List<Recipe> recipesList;
     private Context context;
 
-    public RecipesListAdapter(Context context, List<DummyContent.DummyItem> items) {
+    public RecipesListAdapter(Context context, List<Recipe> recipesList) {
         this.context = context;
-        mValues = items;
+        this.recipesList = recipesList;
     }
 
     @Override
@@ -30,9 +41,34 @@ public class RecipesListAdapter extends RecyclerView.Adapter<RecipesViewHolder> 
 
     @Override
     public void onBindViewHolder(final RecipesViewHolder holder, int position) {
-        holder.mItem = mValues.get(position);
-        holder.recipePhoto.setImageResource(R.mipmap.ic_launcher);
-        holder.recipeTitle.setText(mValues.get(position).content);
+        if(recipesList == null || recipesList.size() == 0) return;
+        Recipe recipe = recipesList.get(position);
+
+
+
+//        Log.v(MainActivity.TAG, "Recipe: ");
+//        Log.v(MainActivity.TAG, "ID: " + recipe.getId());
+//        Log.v(MainActivity.TAG, "Name: " + recipe.getName());
+//        for(Ingredient ingredient : recipe.getIngredients()) {
+//            Log.v(MainActivity.TAG, "" + ingredient.getQuantity());
+//            Log.v(MainActivity.TAG, "" + ingredient.getMeasure());
+//            Log.v(MainActivity.TAG, "" + ingredient.getIngredient());
+//        }
+//        for(Step step : recipe.getSteps()) {
+//            Log.v(MainActivity.TAG, "" + step.getStepId());
+//            Log.v(MainActivity.TAG, "" + step.getShortDescription());
+//            Log.v(MainActivity.TAG, "" + step.getDescription());
+//            Log.v(MainActivity.TAG, "" + step.getVideoURL());
+//            Log.v(MainActivity.TAG, "" + step.getThumbnailURL());
+//        }
+//        Log.v(MainActivity.TAG, "Servings: " + recipe.getServings());
+//        Log.v(MainActivity.TAG, "ImageURL: " + recipe.getImage());
+
+
+
+
+        //holder.recipePhoto.setImageBitmap(getImageBitmap(recipe));
+        holder.recipeTitle.setText(recipe.getName());
 
 //        holder.mView.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -58,6 +94,20 @@ public class RecipesListAdapter extends RecyclerView.Adapter<RecipesViewHolder> 
 
     @Override
     public int getItemCount() {
-        return mValues.size();
+        if(recipesList == null || recipesList.size() == 0)
+            return 0;
+        return recipesList.size();
     }
+
+    @Override
+    public long getItemId(int position) {
+        return recipesList.get(position).getId();
+    }
+
+    public void setRecipesList(List<Recipe> recipesList) {
+        this.recipesList = recipesList;
+        notifyDataSetChanged();
+    }
+
+
 }

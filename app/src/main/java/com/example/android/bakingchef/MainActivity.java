@@ -1,5 +1,6 @@
 package com.example.android.bakingchef;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -8,10 +9,18 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 
 
-import com.example.android.bakingchef.dummy.DummyContent;
+import com.example.android.bakingchef.models.Recipe;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 
 /**
  * An activity representing a list of Items. This activity
@@ -22,12 +31,14 @@ import com.example.android.bakingchef.dummy.DummyContent;
  * item details side-by-side using two vertical panes.
  */
 public class MainActivity extends AppCompatActivity {
-
+    public static final String TAG = "chef";
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
      * device.
      */
     private boolean mTwoPane;
+    private ArrayList<Recipe> recipeList;
+    private RecipesListAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,14 +69,78 @@ public class MainActivity extends AppCompatActivity {
             // activity should be in two-pane mode.
             mTwoPane = true;
         }
+
+        getData.execute();
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
         LinearLayoutManager llm = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(llm);
 
-
-        recyclerView.setAdapter(new RecipesListAdapter(this, DummyContent.ITEMS));
+        adapter = new RecipesListAdapter(this, null);
+        recyclerView.setAdapter(adapter);
+//        recyclerView.setAdapter(new RecipesListAdapter(this, DummyContent.ITEMS));
     }
 
+    private String loadJSONfromAssets() {
+        String json;
+        try {
+            InputStream io = getAssets().open("baking.json");
+            int size = io.available();
+            byte[] buffer = new byte[size];
+            io.read(buffer);
+            io.close();
+            json = new String(buffer, "UTF-8");
+        }
+        catch (IOException ex) {
+            Log.e(TAG, "MainActivity: " + ex.getMessage());
+            return null;
+        }
+
+        return json;
+    }
+
+    AsyncTask<Void, Void, Void> getData = new AsyncTask<Void, Void, Void>() {
+        @Override
+        protected Void doInBackground(Void... params) {
+            Type listType = new TypeToken<ArrayList<Recipe>>(){}.getType();
+
+//            Log.v(TAG, "list type : " + listType);
+//            Log.v(TAG, "JSON : " + loadJSONfromAssets());
+
+            recipeList = new GsonBuilder().create().fromJson(loadJSONfromAssets(), listType);
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            if(recipeList == null) return;
+            if(adapter == null) return;
+
+            adapter.setRecipesList(recipeList);
+
+
+//            for(Recipe recipe : recipeList) {
+//                Log.v(TAG, "Recipe: ");
+//                Log.v(TAG, "" + recipe.getId());
+//                Log.v(TAG, "" + recipe.getName());
+//                for(Ingredient ingredient : recipe.getIngredients()) {
+//                    Log.v(TAG, "" + ingredient.getQuantity());
+//                    Log.v(TAG, "" + ingredient.getMeasure());
+//                    Log.v(TAG, "" + ingredient.getIngredient());
+//                }
+//                for(Step step : recipe.getSteps()) {
+//                    Log.v(TAG, "" + step.getStepId());
+//                    Log.v(TAG, "" + step.getShortDescription());
+//                    Log.v(TAG, "" + step.getDescription());
+//                    Log.v(TAG, "" + step.getVideoURL());
+//                    Log.v(TAG, "" + step.getThumbnailURL());
+//                }
+//                Log.v(TAG, "" + recipe.getServings());
+//                Log.v(TAG, "" + recipe.getImage());
+//            }
+        }
+    };
 }
