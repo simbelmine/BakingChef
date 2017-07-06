@@ -23,17 +23,19 @@ import java.util.List;
 public class RecipesListAdapter extends RecyclerView.Adapter<RecipesViewHolder> {
     private List<Recipe> recipesList;
     private Context context;
+    private RecipeOnClickListener onClickListener;
 
-    public RecipesListAdapter(Context context, List<Recipe> recipesList) {
+    public RecipesListAdapter(Context context, List<Recipe> recipesList, RecipeOnClickListener onClickListener) {
         this.context = context;
         this.recipesList = recipesList;
+        this.onClickListener = onClickListener;
     }
 
     @Override
     public RecipesViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_list_content, parent, false);
-        return new RecipesViewHolder(view);
+        return new RecipesViewHolder(view, onClickListener);
     }
 
     @Override
@@ -43,27 +45,6 @@ public class RecipesListAdapter extends RecyclerView.Adapter<RecipesViewHolder> 
 
         new LoadImage(holder, recipe).execute();
         holder.recipeTitle.setText(recipe.getName());
-
-//        holder.mView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (mTwoPane) {
-//                    Bundle arguments = new Bundle();
-//                    arguments.putString(DetailFragment.ARG_ITEM_ID, holder.mItem.id);
-//                    DetailFragment fragment = new DetailFragment();
-//                    fragment.setArguments(arguments);
-//                    getSupportFragmentManager().beginTransaction()
-//                            .replace(R.id.item_detail_container, fragment)
-//                            .commit();
-//                } else {
-//                    Context context = v.getContext();
-//                    Intent intent = new Intent(context, DetailActivity.class);
-//                    intent.putExtra(DetailFragment.ARG_ITEM_ID, holder.mItem.id);
-//
-//                    context.startActivity(intent);
-//                }
-//            }
-//        });
     }
 
     @Override
@@ -83,6 +64,8 @@ public class RecipesListAdapter extends RecyclerView.Adapter<RecipesViewHolder> 
         notifyDataSetChanged();
     }
 
+
+    // ToDO : remove this and if URL exist load it with Picasso  else load default
 
     public class LoadImage extends AsyncTask<Void, Void, Bitmap> {
         private Recipe recipe;

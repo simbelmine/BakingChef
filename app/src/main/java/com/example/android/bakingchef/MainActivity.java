@@ -1,5 +1,6 @@
 package com.example.android.bakingchef;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -30,7 +31,7 @@ import java.util.ArrayList;
  * item details. On tablets, the activity presents the list of items and
  * item details side-by-side using two vertical panes.
  */
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements RecipeOnClickListener {
     public static final String TAG = "chef";
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
@@ -77,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
         LinearLayoutManager llm = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(llm);
 
-        adapter = new RecipesListAdapter(this, null);
+        adapter = new RecipesListAdapter(this, null, this);
         recyclerView.setAdapter(adapter);
 //        recyclerView.setAdapter(new RecipesListAdapter(this, DummyContent.ITEMS));
     }
@@ -120,27 +121,24 @@ public class MainActivity extends AppCompatActivity {
             if(adapter == null) return;
 
             adapter.setRecipesList(recipeList);
-
-
-//            for(Recipe recipe : recipeList) {
-//                Log.v(TAG, "Recipe: ");
-//                Log.v(TAG, "" + recipe.getId());
-//                Log.v(TAG, "" + recipe.getName());
-//                for(Ingredient ingredient : recipe.getIngredients()) {
-//                    Log.v(TAG, "" + ingredient.getQuantity());
-//                    Log.v(TAG, "" + ingredient.getMeasure());
-//                    Log.v(TAG, "" + ingredient.getIngredient());
-//                }
-//                for(Step step : recipe.getSteps()) {
-//                    Log.v(TAG, "" + step.getStepId());
-//                    Log.v(TAG, "" + step.getShortDescription());
-//                    Log.v(TAG, "" + step.getDescription());
-//                    Log.v(TAG, "" + step.getVideoURL());
-//                    Log.v(TAG, "" + step.getThumbnailURL());
-//                }
-//                Log.v(TAG, "" + recipe.getServings());
-//                Log.v(TAG, "" + recipe.getImage());
-//            }
         }
     };
+
+    @Override
+    public void onClick(int position) {
+        if (mTwoPane) {
+            Bundle arguments = new Bundle();
+            arguments.putParcelable(DetailFragment.RECIPE, recipeList.get(position));
+            DetailFragment fragment = new DetailFragment();
+            fragment.setArguments(arguments);
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.item_detail_container, fragment)
+                    .commit();
+        } else {
+            Intent intent = new Intent(this, DetailActivity.class);
+            intent.putExtra(DetailFragment.RECIPE, recipeList.get(position));
+
+            startActivity(intent);
+        }
+    }
 }
