@@ -22,7 +22,7 @@
             <ImageView
                 android:id="@+id/recipe_photo"
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
+                android:layout_height="match_parent"
                 tools:src = "@mipmap/ic_launcher"
                 android:scaleType="centerCrop"
                 />
@@ -31,12 +31,13 @@
                 android:id="@+id/recipe_name"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:gravity="center"
+                android:gravity="left|center_vertical"
+                android:paddingLeft="@dimen/standard_padding"
                 android:layout_alignParentBottom="true"
                 android:textSize="18sp"
                 android:textColor="@color/main_txt_color"
                 tools:text = "My Recipe Name"
-                android:background="@color/colorAccent"
+                android:background="@color/colorAccentTransparent"
                 />
         </RelativeLayout>
 
