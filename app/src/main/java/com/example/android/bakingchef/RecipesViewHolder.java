@@ -5,15 +5,10 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.android.bakingchef.dummy.DummyContent;
-import com.example.android.bakingchef.models.Recipe;
-
 public class RecipesViewHolder extends RecyclerView.ViewHolder {
     public View mView;
     public ImageView recipePhoto;
     public TextView recipeTitle;
-    //public DummyContent.DummyItem mItem;
-    public Recipe recipe;
 
     public RecipesViewHolder(View view) {
         super(view);

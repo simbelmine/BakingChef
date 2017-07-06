@@ -3,27 +3,24 @@ package com.example.android.bakingchef;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.android.bakingchef.models.Ingredient;
 import com.example.android.bakingchef.models.Recipe;
-import com.example.android.bakingchef.models.Step;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
-import java.util.Scanner;
 
 
 public class RecipesListAdapter extends RecyclerView.Adapter<RecipesViewHolder> {
-
-    //    private final List<DummyContent.DummyItem> mValues;
     private List<Recipe> recipesList;
     private Context context;
 
@@ -44,30 +41,7 @@ public class RecipesListAdapter extends RecyclerView.Adapter<RecipesViewHolder> 
         if(recipesList == null || recipesList.size() == 0) return;
         Recipe recipe = recipesList.get(position);
 
-
-
-//        Log.v(MainActivity.TAG, "Recipe: ");
-//        Log.v(MainActivity.TAG, "ID: " + recipe.getId());
-//        Log.v(MainActivity.TAG, "Name: " + recipe.getName());
-//        for(Ingredient ingredient : recipe.getIngredients()) {
-//            Log.v(MainActivity.TAG, "" + ingredient.getQuantity());
-//            Log.v(MainActivity.TAG, "" + ingredient.getMeasure());
-//            Log.v(MainActivity.TAG, "" + ingredient.getIngredient());
-//        }
-//        for(Step step : recipe.getSteps()) {
-//            Log.v(MainActivity.TAG, "" + step.getStepId());
-//            Log.v(MainActivity.TAG, "" + step.getShortDescription());
-//            Log.v(MainActivity.TAG, "" + step.getDescription());
-//            Log.v(MainActivity.TAG, "" + step.getVideoURL());
-//            Log.v(MainActivity.TAG, "" + step.getThumbnailURL());
-//        }
-//        Log.v(MainActivity.TAG, "Servings: " + recipe.getServings());
-//        Log.v(MainActivity.TAG, "ImageURL: " + recipe.getImage());
-
-
-
-
-        //holder.recipePhoto.setImageBitmap(getImageBitmap(recipe));
+        new LoadImage(holder, recipe).execute();
         holder.recipeTitle.setText(recipe.getName());
 
 //        holder.mView.setOnClickListener(new View.OnClickListener() {
@@ -110,4 +84,57 @@ public class RecipesListAdapter extends RecyclerView.Adapter<RecipesViewHolder> 
     }
 
 
+    public class LoadImage extends AsyncTask<Void, Void, Bitmap> {
+        private Recipe recipe;
+        private RecipesViewHolder holder;
+
+        public LoadImage(RecipesViewHolder holder, Recipe recipe) {
+            this.holder = holder;
+            this.recipe = recipe;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            holder.recipePhoto.setImageBitmap(getDefaultImage());
+        }
+
+        @Override
+        protected Bitmap doInBackground(Void... params) {
+            String imageURL = recipe.getImage();
+
+            Bitmap bitmap = null;
+            if(imageURL.isEmpty())
+                return bitmap;
+
+            HttpURLConnection urlConnection = null;
+            try {
+                URL url = new URL(imageURL);
+                urlConnection = (HttpURLConnection) url.openConnection();
+
+                InputStream in = urlConnection.getInputStream();
+                BufferedInputStream bufferedInputStream = new BufferedInputStream(in);
+                return BitmapFactory.decodeStream(bufferedInputStream);
+            }
+            catch (IOException ex) {
+                Log.e(MainActivity.TAG, "RecipeListAdapter: " + ex.getMessage());
+                return null;
+            }
+            finally {
+                if(urlConnection != null)
+                    urlConnection.disconnect();
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap bitmap) {
+            if(bitmap == null)
+                bitmap = getDefaultImage();
+
+            holder.recipePhoto.setImageBitmap(bitmap);
+        }
+    }
+
+    private Bitmap getDefaultImage() {
+        return BitmapFactory.decodeResource(context.getResources(), R.drawable.baking);
+    }
 }
