@@ -23,7 +23,7 @@
                 android:id="@+id/recipe_photo"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                tools:src = "@mipmap/ic_launcher"
+                tools:src = "@mipmap/logo"
                 android:scaleType="centerCrop"
                 />
 
