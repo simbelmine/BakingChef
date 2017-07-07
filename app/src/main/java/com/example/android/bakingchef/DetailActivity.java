@@ -1,10 +1,13 @@
 package com.example.android.bakingchef;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.NavUtils;
+import android.util.Log;
 import android.view.MenuItem;
 
 /**
@@ -26,7 +29,7 @@ public class DetailActivity extends AppCompatActivity {
         setupActionBar();
         isTwoPane = isTwoPane();
 
-        // savedInstanceState is non-null when there is fragment state
+                // savedInstanceState is non-null when there is fragment state
         // saved from previous configurations of this activity
         // (e.g. when rotating the screen from portrait to landscape).
         // In this case, the fragment will automatically be re-added
@@ -62,6 +65,44 @@ public class DetailActivity extends AppCompatActivity {
                         .add(R.id.steps_container, stepsFragment)
                         .commit();
             }
+        }
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        // Two Pane
+            if(newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            isTwoPane = true;
+        }
+        else {
+            isTwoPane = false;
+        }
+
+        setContentView(R.layout.activity_detail);
+
+        Bundle arguments = new Bundle();
+        arguments.putParcelable(RECIPE, getIntent().getParcelableExtra(RECIPE));
+        arguments.putBoolean(IS_TWO_PANE, isTwoPane);
+
+        DetailFragment fragment = new DetailFragment();
+        fragment.setArguments(arguments);
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.details_container_layout, fragment)
+                .commit();
+
+        if(isTwoPane) {
+            IngredientsFragment ingredientsFragment = new IngredientsFragment();
+            ingredientsFragment.setArguments(arguments);
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.ingredients_container, ingredientsFragment)
+                    .commit();
+
+            StepsFragment stepsFragment = new StepsFragment();
+            stepsFragment.setArguments(arguments);
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.steps_container, stepsFragment)
+                    .commit();
         }
     }
 
