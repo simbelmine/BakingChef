@@ -15,6 +15,7 @@ import android.view.MenuItem;
  */
 public class DetailActivity extends AppCompatActivity {
     public static final String RECIPE = "recipe_list";
+    public static final String IS_TWO_PANE = "is_two_pane";
     private boolean isTwoPane;
 
     @Override
@@ -40,6 +41,7 @@ public class DetailActivity extends AppCompatActivity {
             // using a fragment transaction.
             Bundle arguments = new Bundle();
             arguments.putParcelable(RECIPE, getIntent().getParcelableExtra(RECIPE));
+            arguments.putBoolean(IS_TWO_PANE, isTwoPane);
 
             DetailFragment fragment = new DetailFragment();
             fragment.setArguments(arguments);
