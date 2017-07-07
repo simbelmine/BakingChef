@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.android.bakingchef.models.Recipe;
+import com.squareup.picasso.Picasso;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -43,7 +44,7 @@ public class RecipesListAdapter extends RecyclerView.Adapter<RecipesViewHolder> 
         if(recipesList == null || recipesList.size() == 0) return;
         Recipe recipe = recipesList.get(position);
 
-        new LoadImage(holder, recipe).execute();
+        loadRecipePhoto(holder, recipe.getImage());
         holder.recipeTitle.setText(recipe.getName());
     }
 
@@ -64,60 +65,13 @@ public class RecipesListAdapter extends RecyclerView.Adapter<RecipesViewHolder> 
         notifyDataSetChanged();
     }
 
-
-    // ToDO : remove this and if URL exist load it with Picasso  else load default
-
-    public class LoadImage extends AsyncTask<Void, Void, Bitmap> {
-        private Recipe recipe;
-        private RecipesViewHolder holder;
-
-        public LoadImage(RecipesViewHolder holder, Recipe recipe) {
-            this.holder = holder;
-            this.recipe = recipe;
+    private void loadRecipePhoto(RecipesViewHolder holder, String url) {
+        Picasso picasso = Picasso.with(context);
+        if(url.isEmpty()) {
+            picasso.load(R.drawable.baking).into(holder.recipePhoto);
         }
-
-        @Override
-        protected void onPreExecute() {
-            holder.recipePhoto.setImageBitmap(getDefaultImage());
+        else {
+            picasso.load(url).into(holder.recipePhoto);
         }
-
-        @Override
-        protected Bitmap doInBackground(Void... params) {
-            String imageURL = recipe.getImage();
-
-            Bitmap bitmap = null;
-            if(imageURL.isEmpty())
-                return bitmap;
-
-            HttpURLConnection urlConnection = null;
-            try {
-                URL url = new URL(imageURL);
-                urlConnection = (HttpURLConnection) url.openConnection();
-
-                InputStream in = urlConnection.getInputStream();
-                BufferedInputStream bufferedInputStream = new BufferedInputStream(in);
-                return BitmapFactory.decodeStream(bufferedInputStream);
-            }
-            catch (IOException ex) {
-                Log.e(MainActivity.TAG, "RecipeListAdapter: " + ex.getMessage());
-                return null;
-            }
-            finally {
-                if(urlConnection != null)
-                    urlConnection.disconnect();
-            }
-        }
-
-        @Override
-        protected void onPostExecute(Bitmap bitmap) {
-            if(bitmap == null)
-                bitmap = getDefaultImage();
-
-            holder.recipePhoto.setImageBitmap(bitmap);
-        }
-    }
-
-    private Bitmap getDefaultImage() {
-        return BitmapFactory.decodeResource(context.getResources(), R.drawable.baking);
     }
 }
