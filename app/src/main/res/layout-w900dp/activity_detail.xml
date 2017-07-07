@@ -8,9 +8,10 @@
     <LinearLayout
         android:id="@+id/steps_container"
         android:orientation="vertical"
-        android:layout_width="200dp"
+        android:layout_width="250dp"
         android:layout_height="match_parent">
     </LinearLayout>
+
     <LinearLayout
         android:id="@+id/details_container_layout"
         android:orientation="vertical"

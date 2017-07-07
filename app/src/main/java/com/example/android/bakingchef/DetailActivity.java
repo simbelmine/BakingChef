@@ -14,19 +14,16 @@ import android.view.MenuItem;
  * in a {@link MainActivity}.
  */
 public class DetailActivity extends AppCompatActivity {
+    public static final String RECIPE = "recipe_list";
+    private boolean isTwoPane;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
-//        Toolbar toolbar = (Toolbar) findViewById(R.id.detail_toolbar);
-//        setSupportActionBar(toolbar);
 
-        // Show the Up button in the action bar.
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
+        setupActionBar();
+        isTwoPane = isTwoPane();
 
         // savedInstanceState is non-null when there is fragment state
         // saved from previous configurations of this activity
@@ -42,13 +39,21 @@ public class DetailActivity extends AppCompatActivity {
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
             Bundle arguments = new Bundle();
-            arguments.putParcelable(DetailFragment.RECIPE, getIntent().getParcelableExtra(DetailFragment.RECIPE));
+            arguments.putParcelable(RECIPE, getIntent().getParcelableExtra(RECIPE));
 
             DetailFragment fragment = new DetailFragment();
             fragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.details_container_layout, fragment)
                     .commit();
+
+            if(isTwoPane) {
+                StepsFragment stepsFragment = new StepsFragment();
+                stepsFragment.setArguments(arguments);
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.steps_container, stepsFragment)
+                        .commit();
+            }
         }
     }
 
@@ -67,5 +72,16 @@ public class DetailActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private boolean isTwoPane() {
+        return findViewById(R.id.steps_container) != null;
+    }
+
+    private void setupActionBar() {
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
     }
 }

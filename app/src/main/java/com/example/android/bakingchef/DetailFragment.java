@@ -22,7 +22,6 @@ public class DetailFragment extends Fragment {
      * The fragment argument representing the item ID that this fragment
      * represents.
      */
-    public static final String RECIPE = "recipe_list";
 
     /**
      * The dummy content this fragment is presenting.
@@ -40,20 +39,13 @@ public class DetailFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (getArguments().containsKey(RECIPE)) {
+        if (getArguments().containsKey(DetailActivity.RECIPE)) {
             // Load the dummy content specified by the fragment
             // arguments. In a real-world scenario, use a Loader
             // to load content from a content provider.
 //            recipe = DummyContent.ITEM_MAP.get(getArguments().getString(ARG_ITEM_ID));
 //
-            recipe = getArguments().getParcelable(RECIPE);
-
-            Activity activity = this.getActivity();
-            CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
-            if (appBarLayout != null) {
-                appBarLayout.setTitle(recipe.getName());
-            }
-
+            recipe = getArguments().getParcelable(DetailActivity.RECIPE);
         }
     }
 

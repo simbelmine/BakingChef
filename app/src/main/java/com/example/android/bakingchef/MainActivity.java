@@ -36,7 +36,6 @@ public class MainActivity extends AppCompatActivity implements RecipeOnClickList
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
      * device.
      */
-    private boolean mTwoPane;
     private ArrayList<Recipe> recipeList;
     private RecipesListAdapter adapter;
 
@@ -52,14 +51,6 @@ public class MainActivity extends AppCompatActivity implements RecipeOnClickList
         View recyclerView = findViewById(R.id.item_list);
         assert recyclerView != null;
         setupRecyclerView((RecyclerView) recyclerView);
-
-        if (findViewById(R.id.item_detail_container) != null) {
-            // The detail container view will be present only in the
-            // large-screen layouts (res/values-w900dp).
-            // If this view is present, then the
-            // activity should be in two-pane mode.
-            mTwoPane = true;
-        }
 
         getData.execute();
     }
@@ -120,19 +111,24 @@ public class MainActivity extends AppCompatActivity implements RecipeOnClickList
 
     @Override
     public void onClick(int position) {
-        if (mTwoPane) {
-            Bundle arguments = new Bundle();
-            arguments.putParcelable(DetailFragment.RECIPE, recipeList.get(position));
-            DetailFragment fragment = new DetailFragment();
-            fragment.setArguments(arguments);
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.item_detail_container, fragment)
-                    .commit();
-        } else {
-            Intent intent = new Intent(this, DetailActivity.class);
-            intent.putExtra(DetailFragment.RECIPE, recipeList.get(position));
+//        if (mTwoPane) {
+//            Bundle arguments = new Bundle();
+//            arguments.putParcelable(DetailFragment.RECIPE, recipeList.get(position));
+//            DetailFragment fragment = new DetailFragment();
+//            fragment.setArguments(arguments);
+//            getSupportFragmentManager().beginTransaction()
+//                    .replace(R.id.item_detail_container, fragment)
+//                    .commit();
+//        } else {
+//            Intent intent = new Intent(this, DetailActivity.class);
+//            intent.putExtra(DetailFragment.RECIPE, recipeList.get(position));
+//
+//            startActivity(intent);
+//        }
 
-            startActivity(intent);
-        }
+        Intent intent = new Intent(this, DetailActivity.class);
+        intent.putExtra(DetailActivity.RECIPE, recipeList.get(position));
+
+        startActivity(intent);
     }
 }
