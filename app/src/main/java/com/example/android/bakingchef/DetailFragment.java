@@ -47,11 +47,6 @@ public class DetailFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         if (getArguments().containsKey(DetailActivity.RECIPE)) {
-            // Load the dummy content specified by the fragment
-            // arguments. In a real-world scenario, use a Loader
-            // to load content from a content provider.
-//            recipe = DummyContent.ITEM_MAP.get(getArguments().getString(ARG_ITEM_ID));
-//
             recipe = getArguments().getParcelable(DetailActivity.RECIPE);
             isTwoPane = getArguments().getBoolean(DetailActivity.IS_TWO_PANE, false);
         }
@@ -80,9 +75,9 @@ public class DetailFragment extends Fragment {
 
     private void setupViewPager() {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getActivity().getSupportFragmentManager());
+        adapter.setRecipe(recipe);
         adapter.addFragment(new IngredientsFragment(), "Ingredients");
         adapter.addFragment(new StepsFragment(), "Steps");
-        adapter.setRecipe(recipe);
         viewPager.setAdapter(adapter);
     }
 
