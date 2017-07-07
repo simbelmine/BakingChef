@@ -7,5 +7,5 @@
 
     <dimen name="standard_margin">16dp</dimen>
     <dimen name="standard_padding">16dp</dimen>
-    <dimen name="cards_margin">8dp</dimen>
+    <dimen name="cards_padding">8dp</dimen>
 </resources>

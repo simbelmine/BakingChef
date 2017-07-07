@@ -1,11 +1,7 @@
 package com.example.android.bakingchef;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,11 +9,6 @@ import android.view.ViewGroup;
 import com.example.android.bakingchef.models.Recipe;
 import com.squareup.picasso.Picasso;
 
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.List;
 
 
@@ -35,7 +26,7 @@ public class RecipesListAdapter extends RecyclerView.Adapter<RecipesViewHolder> 
     @Override
     public RecipesViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_list_content, parent, false);
+                .inflate(R.layout.list_item_content, parent, false);
         return new RecipesViewHolder(view, onClickListener);
     }
 

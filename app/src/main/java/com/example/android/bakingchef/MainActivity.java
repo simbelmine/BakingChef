@@ -5,9 +5,10 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 
@@ -42,7 +43,7 @@ public class MainActivity extends AppCompatActivity implements RecipeOnClickList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_item_list);
+        setContentView(R.layout.activity_main);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -63,13 +64,21 @@ public class MainActivity extends AppCompatActivity implements RecipeOnClickList
         getData.execute();
     }
 
+    public int calculateNoOfColumns() {
+        DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+        float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
+        int noOfColumns = (int) (dpWidth / 180);
+        return noOfColumns;
+    }
+
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        LinearLayoutManager llm = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(llm);
+        RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
+        if(layoutManager instanceof GridLayoutManager) {
+            recyclerView.setLayoutManager(new GridLayoutManager(this, calculateNoOfColumns()));
+        }
 
         adapter = new RecipesListAdapter(this, null, this);
         recyclerView.setAdapter(adapter);
-//        recyclerView.setAdapter(new RecipesListAdapter(this, DummyContent.ITEMS));
     }
 
     private String loadJSONfromAssets() {
