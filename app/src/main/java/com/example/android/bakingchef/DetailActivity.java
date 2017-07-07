@@ -48,6 +48,12 @@ public class DetailActivity extends AppCompatActivity {
                     .commit();
 
             if(isTwoPane) {
+                IngredientsFragment ingredientsFragment = new IngredientsFragment();
+                ingredientsFragment.setArguments(arguments);
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.ingredients_container, ingredientsFragment)
+                        .commit();
+
                 StepsFragment stepsFragment = new StepsFragment();
                 stepsFragment.setArguments(arguments);
                 getSupportFragmentManager().beginTransaction()

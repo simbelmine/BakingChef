@@ -26,6 +26,7 @@
             android:padding="16dp"
             android:textIsSelectable="true"
             tools:context="com.example.android.bakingchef.DetailFragment" />
+        <include layout="@layout/tab_details_layout"/>
 
     </RelativeLayout>
 
