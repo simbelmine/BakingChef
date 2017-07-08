@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.android.bakingchef.models.Recipe;
@@ -23,8 +24,6 @@ import java.util.List;
  */
 
 public class StepsFragment extends Fragment implements View.OnClickListener {
-    private static final String TAG_SHORT_DESCRIPTION = "short";
-    private static final String TAG_DESCRIPTION = "long";
     private Recipe recipe;
     private boolean isTwoPane;
     private int step;
@@ -49,7 +48,7 @@ public class StepsFragment extends Fragment implements View.OnClickListener {
         prevStepBtn = (Button) getActivity().findViewById(R.id.button_prev_step);
         prevStepBtn.setOnClickListener(this);
 
-        step = 1;
+        step = 0;
     }
 
     @Nullable
@@ -87,6 +86,27 @@ public class StepsFragment extends Fragment implements View.OnClickListener {
                 step--;
                 break;
         }
+
+        if(v instanceof Button && isTwoPane) {
+            int tag = (int)v.getTag(); Log.v(MainActivity.TAG, "tag : " + tag);
+            LinearLayout stepsDetailsContainer = (LinearLayout) getActivity().findViewById(R.id.steps_details_container);
+            TextView sDescView = new TextView(getContext());
+            TextView lDescView = new TextView(getContext());
+            removeLayoutViews(stepsDetailsContainer);
+
+            List<Step> steps = recipe.getSteps();
+            if(steps == null || steps.size() == 0)
+                return;
+            Step step = steps.get(tag);
+            String sDesc = step.getShortDescription();
+            String lDesc = step.getDescription();
+
+            sDescView.setText(sDesc);
+            lDescView.setText(lDesc);
+
+            stepsDetailsContainer.addView(sDescView);
+            stepsDetailsContainer.addView(lDescView);
+        }
     }
 
     private void setFocusOnStep() {
@@ -99,8 +119,8 @@ public class StepsFragment extends Fragment implements View.OnClickListener {
         if(steps == null || steps.size() == 0)
             return;
         int allSteps = steps.size();
-        if(stepIdx < 1) {
-            step = 1;
+        if(stepIdx < 0) {
+            step = 0;
             return;
         }
         if(stepIdx > allSteps-1) {
@@ -117,9 +137,7 @@ public class StepsFragment extends Fragment implements View.OnClickListener {
 
         TextView shortDescriptionView = new TextView(getContext());
         shortDescriptionView.setText(shortDescription);
-        shortDescriptionView.setTag(TAG_SHORT_DESCRIPTION);
         TextView descriptionView = new TextView(getContext());
-        descriptionView.setTag(TAG_DESCRIPTION);
         descriptionView.setText(description);
 
         stepsLayout.addView(shortDescriptionView);
@@ -127,7 +145,7 @@ public class StepsFragment extends Fragment implements View.OnClickListener {
     }
 
     private void setButtonsActiveInactive() {
-        if(step <= 1) {
+        if(step <= 0) {
             nextStepBtn.setTextColor(getResources().getColor(R.color.main_txt_color));
             prevStepBtn.setTextColor(getResources().getColor(R.color.button_inactive));
         }
@@ -155,6 +173,8 @@ public class StepsFragment extends Fragment implements View.OnClickListener {
         for(Step step : stepsList) {
             Button stepButton = new Button(getContext());
             String shortDescription = step.getShortDescription();
+            stepButton.setOnClickListener(this);
+            stepButton.setTag(step.getStepId());
             stepButton.setText(shortDescription);
             stepButton.setTextColor(getResources().getColor(R.color.main_txt_color));
             stepButton.setBackgroundResource(R.drawable.selector);
