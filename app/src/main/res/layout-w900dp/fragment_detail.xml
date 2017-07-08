@@ -29,13 +29,30 @@
 
     </RelativeLayout>
 
-    <Button
+    <LinearLayout
+        android:id="@+id/buttons_container"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.5"
-        android:background="@color/colorPrimary"
-        android:textColor="@color/main_txt_color"
-        android:text="Next"
-        android:visibility="gone"/>
+        android:orientation="horizontal"
+        android:weightSum="2"
+        android:visibility="gone">
+        <Button
+            android:id="@+id/button_prev_step"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/colorPrimary"
+            android:textColor="@color/main_txt_color"
+            android:text="Previous"/>
+        <Button
+            android:id="@+id/button_next_step"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/colorPrimary"
+            android:textColor="@color/main_txt_color"
+            android:text="Next"/>
+    </LinearLayout>
 
 </LinearLayout>

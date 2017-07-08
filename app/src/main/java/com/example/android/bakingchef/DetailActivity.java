@@ -75,6 +75,7 @@ public class DetailActivity extends AppCompatActivity {
             if(newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             isTwoPane = true;
         }
+        // Single Pane
         else {
             isTwoPane = false;
         }

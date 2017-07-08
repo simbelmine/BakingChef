@@ -6,6 +6,7 @@
     <color name="main_txt_color">#ffffff</color>
 
     <color name="colorAccentTransparent">#904c3d3d</color>
+    <color name="button_inactive">#804c3d3d</color>
 
     <!--
 <color name="colorPrimary">#3F51B5</color>
