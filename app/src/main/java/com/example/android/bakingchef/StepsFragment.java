@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -155,7 +156,13 @@ public class StepsFragment extends Fragment implements View.OnClickListener {
             Button stepButton = new Button(getContext());
             String shortDescription = step.getShortDescription();
             stepButton.setText(shortDescription);
-            layout.addView(stepButton);
+            stepButton.setTextColor(getResources().getColor(R.color.main_txt_color));
+            stepButton.setBackgroundResource(R.drawable.selector);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams((int)getResources()
+                    .getDimension(R.dimen.button_width), (int)getResources().getDimension(R.dimen.button_height));
+            params.setMargins(0, 0, 0, (int)getResources().getDimension(R.dimen.standard_margin));
+            params.gravity= Gravity.CENTER_HORIZONTAL;
+            layout.addView(stepButton, params);
         }
 
         View emptyView = new View(getContext());

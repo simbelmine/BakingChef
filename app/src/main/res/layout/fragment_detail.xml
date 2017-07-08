@@ -20,29 +20,29 @@
         <include layout="@layout/tab_details_layout"/>
 
     </RelativeLayout>
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/buttons_container"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.5"
-        android:orientation="horizontal"
-        android:weightSum="2">
+        android:gravity="center">
         <Button
             android:id="@+id/button_prev_step"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@color/colorPrimary"
+            android:layout_width="@dimen/button_width"
+            android:layout_height="@dimen/button_height"
+            android:layout_marginRight="@dimen/standard_margin"
+            android:background="@drawable/selector"
             android:textColor="@color/main_txt_color"
             android:text="Previous"/>
         <Button
             android:id="@+id/button_next_step"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@color/colorPrimary"
+            android:layout_width="@dimen/button_width"
+            android:layout_height="@dimen/button_height"
+            android:layout_marginLeft="@dimen/standard_margin"
+            android:background="@drawable/selector"
             android:textColor="@color/main_txt_color"
+            android:layout_toRightOf="@+id/button_prev_step"
             android:text="Next"/>
-    </LinearLayout>
+    </RelativeLayout>
 
 </LinearLayout>

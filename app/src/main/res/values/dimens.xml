@@ -9,4 +9,8 @@
     <dimen name="standard_padding">16dp</dimen>
     <dimen name="cards_padding">8dp</dimen>
     <dimen name="step_button_margin">8dp</dimen>
+
+    <dimen name="step_layput_height">250dp</dimen>
+    <dimen name="button_width">230dp</dimen>
+    <dimen name="button_height">40dp</dimen>
 </resources>
