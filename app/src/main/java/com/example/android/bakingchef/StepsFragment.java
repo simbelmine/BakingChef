@@ -77,14 +77,14 @@ public class StepsFragment extends Fragment implements View.OnClickListener {
         int id = v.getId();
         switch (id) {
             case R.id.button_next_step:
-                step++;
                 setFocusOnStep();
                 showStepDetails(stepsLayout, step);
+                step++;
                 break;
             case R.id.button_prev_step:
-                step--;
                 setFocusOnStep();
                 showStepDetails(stepsLayout, step);
+                step--;
                 break;
         }
     }
