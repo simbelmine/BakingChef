@@ -4,16 +4,13 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.android.bakingchef.models.Recipe;
-import com.example.android.bakingchef.models.Step;
-
-import java.util.List;
 
 /**
  * A fragment representing a single Item detail screen.
@@ -80,6 +77,7 @@ public class DetailFragment extends Fragment {
     private void setupViewPager() {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getActivity().getSupportFragmentManager());
         adapter.setRecipe(recipe);
+        adapter.setIsTwoPane(isTwoPane);
         adapter.addFragment(new IngredientsFragment(), "Ingredients");
         adapter.addFragment(new StepsFragment(), "Steps");
         viewPager.setAdapter(adapter);
