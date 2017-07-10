@@ -70,6 +70,12 @@ public class StepsFragment extends Fragment implements View.OnClickListener {
     }
 
     @Override
+    public void onDetach() {
+        super.onDetach();
+        step = 0;
+    }
+
+    @Override
     public void onClick(View v) {
         LinearLayout stepsLayout = (LinearLayout) getActivity().findViewById(R.id.steps_fragment_container);
         int id = v.getId();
