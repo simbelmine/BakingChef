@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.android.bakingchef.helpers.TextHelper;
 import com.example.android.bakingchef.models.Recipe;
 import com.example.android.bakingchef.models.Step;
 
@@ -39,9 +40,12 @@ public class StepsFragment extends Fragment implements View.OnClickListener {
         }
 
         nextStepBtn = (Button) getActivity().findViewById(R.id.button_next_step);
-        nextStepBtn.setOnClickListener(this);
         prevStepBtn = (Button) getActivity().findViewById(R.id.button_prev_step);
-        prevStepBtn.setOnClickListener(this);
+
+        if(nextStepBtn != null && prevStepBtn != null) {
+            nextStepBtn.setOnClickListener(this);
+            prevStepBtn.setOnClickListener(this);
+        }
 
         viewPager = (ViewPager)getActivity().findViewById(R.id.viewpager);
     }
@@ -53,6 +57,7 @@ public class StepsFragment extends Fragment implements View.OnClickListener {
 
         if (recipe != null) {
             LinearLayout stepsLayout = (LinearLayout) rootView.findViewById(R.id.steps_fragment_container);
+            if(stepsLayout == null) return rootView;
 
             if(isTwoPane) {
                 addStepsViews(stepsLayout);
@@ -107,6 +112,7 @@ public class StepsFragment extends Fragment implements View.OnClickListener {
 
     private void showStepDetailsTwoPane(int stepIdx) {
         LinearLayout stepsDetailsContainer = (LinearLayout) getActivity().findViewById(R.id.steps_details_container);
+        if(stepsDetailsContainer == null) return;
         TextView sDescView = new TextView(getContext());
         TextView lDescView = new TextView(getContext());
         removeLayoutViews(stepsDetailsContainer);
@@ -119,7 +125,9 @@ public class StepsFragment extends Fragment implements View.OnClickListener {
         String lDesc = step.getDescription();
 
         sDescView.setText(sDesc);
+        TextHelper.setTextStyle(getContext(), sDescView, true);
         lDescView.setText(lDesc);
+        TextHelper.setTextStyle(getContext(), lDescView, false);
 
         stepsDetailsContainer.addView(sDescView);
         stepsDetailsContainer.addView(lDescView);
@@ -135,15 +143,15 @@ public class StepsFragment extends Fragment implements View.OnClickListener {
 
     private void showStepDetails(LinearLayout stepsLayout, int stepIdx) {
         List<Step> steps = recipe.getSteps();
-        if(steps == null || steps.size() == 0)
+        if (steps == null || steps.size() == 0)
             return;
         int allSteps = steps.size();
-        if(stepIdx < 0) {
+        if (stepIdx < 0) {
             step = 0;
             return;
         }
-        if(stepIdx > allSteps-1) {
-            step = allSteps-1;
+        if (stepIdx > allSteps - 1) {
+            step = allSteps - 1;
             return;
         }
         setButtonsActiveInactive();
@@ -156,25 +164,27 @@ public class StepsFragment extends Fragment implements View.OnClickListener {
 
         TextView shortDescriptionView = new TextView(getContext());
         shortDescriptionView.setText(shortDescription);
+        TextHelper.setTextStyle(getContext(), shortDescriptionView, true);
         TextView descriptionView = new TextView(getContext());
         descriptionView.setText(description);
+        TextHelper.setTextStyle(getContext(), descriptionView, false);
 
         stepsLayout.addView(shortDescriptionView);
         stepsLayout.addView(descriptionView);
     }
 
     private void setButtonsActiveInactive() {
-        if(step <= 0) {
-            nextStepBtn.setTextColor(getResources().getColor(R.color.main_txt_color));
-            prevStepBtn.setTextColor(getResources().getColor(R.color.button_inactive));
-        }
-        else if(recipe.getSteps() != null && step >= recipe.getSteps().size()-1) {
-            nextStepBtn.setTextColor(getResources().getColor(R.color.button_inactive));
-            prevStepBtn.setTextColor(getResources().getColor(R.color.main_txt_color));
-        }
-        else {
-            nextStepBtn.setTextColor(getResources().getColor(R.color.main_txt_color));
-            prevStepBtn.setTextColor(getResources().getColor(R.color.main_txt_color));
+        if(nextStepBtn != null && prevStepBtn != null) {
+            if (step <= 0) {
+                nextStepBtn.setTextColor(getResources().getColor(R.color.main_txt_color));
+                prevStepBtn.setTextColor(getResources().getColor(R.color.button_inactive));
+            } else if (recipe.getSteps() != null && step >= recipe.getSteps().size() - 1) {
+                nextStepBtn.setTextColor(getResources().getColor(R.color.button_inactive));
+                prevStepBtn.setTextColor(getResources().getColor(R.color.main_txt_color));
+            } else {
+                nextStepBtn.setTextColor(getResources().getColor(R.color.main_txt_color));
+                prevStepBtn.setTextColor(getResources().getColor(R.color.main_txt_color));
+            }
         }
     }
 
@@ -186,10 +196,10 @@ public class StepsFragment extends Fragment implements View.OnClickListener {
 
     private void addStepsViews(LinearLayout layout) {
         List<Step> stepsList = recipe.getSteps();
-        if(stepsList == null || stepsList.size() == 0)
+        if (stepsList == null || stepsList.size() == 0)
             return;
 
-        for(Step step : stepsList) {
+        for (Step step : stepsList) {
             Button stepButton = new Button(getContext());
             String shortDescription = step.getShortDescription();
             stepButton.setOnClickListener(this);
@@ -197,15 +207,15 @@ public class StepsFragment extends Fragment implements View.OnClickListener {
             stepButton.setText(shortDescription);
             stepButton.setTextColor(getResources().getColor(R.color.main_txt_color));
             stepButton.setBackgroundResource(R.drawable.selector);
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams((int)getResources()
-                    .getDimension(R.dimen.button_width), (int)getResources().getDimension(R.dimen.button_height));
-            params.setMargins(0, 0, 0, (int)getResources().getDimension(R.dimen.standard_margin));
-            params.gravity= Gravity.CENTER_HORIZONTAL;
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams((int) getResources()
+                    .getDimension(R.dimen.button_width), (int) getResources().getDimension(R.dimen.button_height));
+            params.setMargins(0, 0, 0, (int) getResources().getDimension(R.dimen.standard_margin));
+            params.gravity = Gravity.CENTER_HORIZONTAL;
             layout.addView(stepButton, params);
         }
 
         View emptyView = new View(getContext());
-        emptyView.setMinimumHeight((int)getContext().getResources().getDimension(R.dimen.standard_margin));
+        emptyView.setMinimumHeight((int) getContext().getResources().getDimension(R.dimen.standard_margin));
         layout.addView(emptyView);
     }
 }
