@@ -1,6 +1,7 @@
 package com.example.android.bakingchef;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -17,15 +18,19 @@ import android.view.MenuItem;
 public class DetailActivity extends AppCompatActivity {
     public static final String RECIPE = "recipe_list";
     public static final String IS_TWO_PANE = "is_two_pane";
+    public static final String CURRENT_STEP = "current_step";
+    public static final String DETAILS_PREFS = "DetailsPrefs";
     private static final String DETAILS_FRAGMENT = "DetailsFragment";
     private static final String STEPS_FRAGMENT = "StepsFragment";
     private static final String INGREDIENTS_FRAGMENT = "IngredientsFragment";
     private boolean isTwoPane;
+    private SharedPreferences sharedPrefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
+        sharedPrefs = getSharedPreferences(DETAILS_PREFS, MODE_PRIVATE);
 
         setupActionBar();
         isTwoPane = isTwoPane();
@@ -123,6 +128,12 @@ public class DetailActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        sharedPrefs.edit().clear().commit();
     }
 
     private boolean isTwoPane() {

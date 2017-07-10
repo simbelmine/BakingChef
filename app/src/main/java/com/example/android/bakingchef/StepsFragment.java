@@ -1,5 +1,7 @@
 package com.example.android.bakingchef;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -21,16 +23,18 @@ import java.util.List;
 public class StepsFragment extends Fragment implements View.OnClickListener {
     private Recipe recipe;
     private boolean isTwoPane;
-    private static int step = 0;
+    private int step;
     private Button nextStepBtn;
     private Button prevStepBtn;
     private  ViewPager viewPager;
+    private SharedPreferences sharedPrefs;
 
     public StepsFragment(){}
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        sharedPrefs = getActivity().getSharedPreferences(DetailActivity.DETAILS_PREFS, Context.MODE_PRIVATE);
 
         if (getArguments().containsKey(DetailActivity.RECIPE)) {
             recipe = getArguments().getParcelable(DetailActivity.RECIPE);
@@ -48,6 +52,12 @@ public class StepsFragment extends Fragment implements View.OnClickListener {
         }
 
         viewPager = (ViewPager)getActivity().findViewById(R.id.viewpager);
+        if(sharedPrefs != null && sharedPrefs.contains(DetailActivity.CURRENT_STEP)) {
+            step = sharedPrefs.getInt(DetailActivity.CURRENT_STEP, 0);
+        }
+        else {
+            step = 0;
+        }
     }
 
     @Nullable
@@ -72,12 +82,6 @@ public class StepsFragment extends Fragment implements View.OnClickListener {
         }
 
         return rootView;
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        step = 0;
     }
 
     @Override
@@ -108,6 +112,8 @@ public class StepsFragment extends Fragment implements View.OnClickListener {
             step = tag;
             showStepDetailsTwoPane(tag);
         }
+
+        saveCurrentStep();
     }
 
     private void showStepDetailsTwoPane(int stepIdx) {
@@ -217,5 +223,11 @@ public class StepsFragment extends Fragment implements View.OnClickListener {
         View emptyView = new View(getContext());
         emptyView.setMinimumHeight((int) getContext().getResources().getDimension(R.dimen.standard_margin));
         layout.addView(emptyView);
+    }
+
+    private void saveCurrentStep() {
+        if(sharedPrefs != null) {
+            sharedPrefs.edit().putInt(DetailActivity.CURRENT_STEP, step).commit();
+        }
     }
 }
