@@ -4,9 +4,11 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -46,7 +48,7 @@ public class IngredientsFragment extends Fragment {
             if(stepsLayout == null) return rootView;
 
             addServingsView(stepsLayout);
-            addIngredientsView(stepsLayout);
+            addIngredientViews(stepsLayout);
         }
 
         return rootView;
@@ -60,31 +62,45 @@ public class IngredientsFragment extends Fragment {
         layout.addView(servingsView);
     }
 
-    private void addIngredientsView(LinearLayout layout) {
-        TextView ingredientsView = new TextView(getContext());
-        String ingredientsText = buildIngredientsText();
-        if(ingredientsText.isEmpty())
-            return;
-        ingredientsView.setText(ingredientsText);
-        TextHelper.setTextStyle(getContext(), ingredientsView, false);
-        layout.addView(ingredientsView);
-    }
-
-    private String buildIngredientsText() {
-        StringBuilder builder = new StringBuilder();
+    private void addIngredientViews(LinearLayout layout) {
         List<Ingredient> ingredientsList = recipe.getIngredients();
         if(ingredientsList == null || ingredientsList.size() == 0)
-            return "";
-        for(Ingredient ingredient : ingredientsList) {
-            double quantity = ingredient.getQuantity();
-            String measure = ingredient.getMeasure();
-            String ingredientStr = ingredient.getIngredient();
+            return;
 
-            builder.append(BULLET + " " + String.valueOf(quantity) + " ");
-            builder.append(measure + " ");
-            builder.append(ingredientStr + "\n");
-            if(!isTwoPane) builder.append("\n");
+        for(Ingredient ingredient : ingredientsList) {
+            LinearLayout singleLayout = new LinearLayout(getContext());
+            singleLayout.setOrientation(LinearLayout.HORIZONTAL);
+
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                    (int)getResources().getDimension(R.dimen.text_view_height));
+
+            ContextThemeWrapper newContext = new ContextThemeWrapper(getActivity().getBaseContext(), R.style.checkBoxStyle);
+            CheckBox checkBox = new CheckBox(newContext);
+            TextView textView = new TextView(getContext());
+
+            checkBox.setTag(ingredient.getIngredient());
+
+            String ingredientStr = buildIngredientText(ingredient);
+            textView.setText(ingredientStr);
+            TextHelper.setTextStyle(getContext(), textView, false);
+
+            singleLayout.addView(checkBox);
+            singleLayout.addView(textView);
+
+            layout.addView(singleLayout, params);
         }
+    }
+
+    private String buildIngredientText(Ingredient ingredient) {
+        StringBuilder builder = new StringBuilder();
+        double quantity = ingredient.getQuantity();
+        String measure = ingredient.getMeasure();
+        String ingredientStr = ingredient.getIngredient();
+
+        builder.append(String.valueOf(quantity) + " ");
+        builder.append(measure + " ");
+        builder.append(ingredientStr + "\n");
+        if(!isTwoPane) builder.append("\n");
 
         return builder.toString();
     }
