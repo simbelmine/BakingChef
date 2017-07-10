@@ -14,7 +14,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.android.bakingchef.helpers.TextHelper;
+import com.example.android.bakingchef.helpers.TextUtils;
 import com.example.android.bakingchef.models.Recipe;
 import com.example.android.bakingchef.models.Step;
 
@@ -131,9 +131,9 @@ public class StepsFragment extends Fragment implements View.OnClickListener {
         String lDesc = step.getDescription();
 
         sDescView.setText(sDesc);
-        TextHelper.setTextStyle(getContext(), sDescView, true);
+        TextUtils.setTextStyle(getContext(), sDescView, true);
         lDescView.setText(lDesc);
-        TextHelper.setTextStyle(getContext(), lDescView, false);
+        TextUtils.setTextStyle(getContext(), lDescView, false);
 
         stepsDetailsContainer.addView(sDescView);
         stepsDetailsContainer.addView(lDescView);
@@ -170,10 +170,10 @@ public class StepsFragment extends Fragment implements View.OnClickListener {
 
         TextView shortDescriptionView = new TextView(getContext());
         shortDescriptionView.setText(shortDescription);
-        TextHelper.setTextStyle(getContext(), shortDescriptionView, true);
+        TextUtils.setTextStyle(getContext(), shortDescriptionView, true);
         TextView descriptionView = new TextView(getContext());
         descriptionView.setText(description);
-        TextHelper.setTextStyle(getContext(), descriptionView, false);
+        TextUtils.setTextStyle(getContext(), descriptionView, false);
 
         stepsLayout.addView(shortDescriptionView);
         stepsLayout.addView(descriptionView);

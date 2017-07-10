@@ -10,7 +10,7 @@ import com.example.android.bakingchef.R;
  * Created by Sve on 7/9/17.
  */
 
-public class TextHelper {
+public class TextUtils {
     public static void setTextStyle(Context context, TextView textView, boolean isHeader) {
         setTextAppearance(context, textView, isHeader);
         textView.setPadding(0, 0, 0, (int)context.getResources().getDimension(R.dimen.standard_padding));
