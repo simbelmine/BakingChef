@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.android.bakingchef.models.Recipe;
@@ -29,6 +28,7 @@ public class StepsFragment extends Fragment implements View.OnClickListener {
     private int step;
     private Button nextStepBtn;
     private Button prevStepBtn;
+    private  ViewPager viewPager;
 
     public StepsFragment(){}
 
@@ -47,6 +47,8 @@ public class StepsFragment extends Fragment implements View.OnClickListener {
         nextStepBtn.setOnClickListener(this);
         prevStepBtn = (Button) getActivity().findViewById(R.id.button_prev_step);
         prevStepBtn.setOnClickListener(this);
+
+        viewPager = (ViewPager)getActivity().findViewById(R.id.viewpager);
 
         step = 0;
     }
@@ -76,19 +78,25 @@ public class StepsFragment extends Fragment implements View.OnClickListener {
         int id = v.getId();
         switch (id) {
             case R.id.button_next_step:
-                setFocusOnStep();
-                showStepDetails(stepsLayout, step);
+                if(!isStepsOnFocus()) {
+                    setFocusOnStep();
+                    return;
+                }
                 step++;
+                showStepDetails(stepsLayout, step);
                 break;
             case R.id.button_prev_step:
-                setFocusOnStep();
-                showStepDetails(stepsLayout, step);
+                if(!isStepsOnFocus()) {
+                    setFocusOnStep();
+                    return;
+                }
                 step--;
+                showStepDetails(stepsLayout, step);
                 break;
         }
 
         if(v instanceof Button && isTwoPane) {
-            int tag = (int)v.getTag(); Log.v(MainActivity.TAG, "tag : " + tag);
+            int tag = (int)v.getTag();
             LinearLayout stepsDetailsContainer = (LinearLayout) getActivity().findViewById(R.id.steps_details_container);
             TextView sDescView = new TextView(getContext());
             TextView lDescView = new TextView(getContext());
@@ -110,8 +118,11 @@ public class StepsFragment extends Fragment implements View.OnClickListener {
     }
 
     private void setFocusOnStep() {
-        ViewPager viewPager = (ViewPager)getActivity().findViewById(R.id.viewpager);
         viewPager.setCurrentItem(1);
+    }
+
+    private boolean isStepsOnFocus() {
+        return viewPager.getCurrentItem() == 1;
     }
 
     private void showStepDetails(LinearLayout stepsLayout, int stepIdx) {
