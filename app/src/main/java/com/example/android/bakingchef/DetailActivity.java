@@ -1,13 +1,11 @@
 package com.example.android.bakingchef;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.NavUtils;
-import android.util.Log;
 import android.view.MenuItem;
 
 /**
@@ -19,6 +17,9 @@ import android.view.MenuItem;
 public class DetailActivity extends AppCompatActivity {
     public static final String RECIPE = "recipe_list";
     public static final String IS_TWO_PANE = "is_two_pane";
+    private static final String DETAILS_FRAGMENT = "DetailsFragment";
+    private static final String STEPS_FRAGMENT = "StepsFragment";
+    private static final String INGREDIENTS_FRAGMENT = "IngredientsFragment";
     private boolean isTwoPane;
 
     @Override
@@ -89,20 +90,20 @@ public class DetailActivity extends AppCompatActivity {
         DetailFragment fragment = new DetailFragment();
         fragment.setArguments(arguments);
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.details_container_layout, fragment)
+                .replace(R.id.details_container_layout, fragment, DETAILS_FRAGMENT)
                 .commit();
 
         if(isTwoPane) {
             IngredientsFragment ingredientsFragment = new IngredientsFragment();
             ingredientsFragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.ingredients_container, ingredientsFragment)
+                    .replace(R.id.ingredients_container, ingredientsFragment, INGREDIENTS_FRAGMENT)
                     .commit();
 
             StepsFragment stepsFragment = new StepsFragment();
             stepsFragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.steps_container, stepsFragment)
+                    .replace(R.id.steps_container, stepsFragment, STEPS_FRAGMENT)
                     .commit();
         }
     }

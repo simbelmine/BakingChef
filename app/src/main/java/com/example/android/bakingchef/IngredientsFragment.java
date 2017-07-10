@@ -14,9 +14,6 @@ import com.example.android.bakingchef.models.Recipe;
 
 import java.util.List;
 
-/**
- * Created by Sve on 7/7/17.
- */
 
 public class IngredientsFragment extends Fragment {
     private Recipe recipe;

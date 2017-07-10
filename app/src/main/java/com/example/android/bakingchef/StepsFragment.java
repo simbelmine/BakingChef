@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,14 +17,10 @@ import com.example.android.bakingchef.models.Step;
 
 import java.util.List;
 
-/**
- * Created by Sve on 7/7/17.
- */
-
 public class StepsFragment extends Fragment implements View.OnClickListener {
     private Recipe recipe;
     private boolean isTwoPane;
-    private int step;
+    private static int step = 0;
     private Button nextStepBtn;
     private Button prevStepBtn;
     private  ViewPager viewPager;
@@ -49,8 +44,6 @@ public class StepsFragment extends Fragment implements View.OnClickListener {
         prevStepBtn.setOnClickListener(this);
 
         viewPager = (ViewPager)getActivity().findViewById(R.id.viewpager);
-
-        step = 0;
     }
 
     @Nullable
@@ -63,8 +56,12 @@ public class StepsFragment extends Fragment implements View.OnClickListener {
 
             if(isTwoPane) {
                 addStepsViews(stepsLayout);
+                showStepDetailsTwoPane(step);
             }
             else {
+                if(step > 0 && !isStepsOnFocus()) {
+                    setFocusOnStep();
+                }
                 showStepDetails(stepsLayout, step);
             }
         }
@@ -97,24 +94,29 @@ public class StepsFragment extends Fragment implements View.OnClickListener {
 
         if(v instanceof Button && isTwoPane) {
             int tag = (int)v.getTag();
-            LinearLayout stepsDetailsContainer = (LinearLayout) getActivity().findViewById(R.id.steps_details_container);
-            TextView sDescView = new TextView(getContext());
-            TextView lDescView = new TextView(getContext());
-            removeLayoutViews(stepsDetailsContainer);
-
-            List<Step> steps = recipe.getSteps();
-            if(steps == null || steps.size() == 0)
-                return;
-            Step step = steps.get(tag);
-            String sDesc = step.getShortDescription();
-            String lDesc = step.getDescription();
-
-            sDescView.setText(sDesc);
-            lDescView.setText(lDesc);
-
-            stepsDetailsContainer.addView(sDescView);
-            stepsDetailsContainer.addView(lDescView);
+            step = tag;
+            showStepDetailsTwoPane(tag);
         }
+    }
+
+    private void showStepDetailsTwoPane(int stepIdx) {
+        LinearLayout stepsDetailsContainer = (LinearLayout) getActivity().findViewById(R.id.steps_details_container);
+        TextView sDescView = new TextView(getContext());
+        TextView lDescView = new TextView(getContext());
+        removeLayoutViews(stepsDetailsContainer);
+
+        List<Step> steps = recipe.getSteps();
+        if(steps == null || steps.size() == 0)
+            return;
+        Step step = steps.get(stepIdx);
+        String sDesc = step.getShortDescription();
+        String lDesc = step.getDescription();
+
+        sDescView.setText(sDesc);
+        lDescView.setText(lDesc);
+
+        stepsDetailsContainer.addView(sDescView);
+        stepsDetailsContainer.addView(lDescView);
     }
 
     private void setFocusOnStep() {
