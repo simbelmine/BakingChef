@@ -134,7 +134,7 @@ public class DetailActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         sharedPrefs.edit().clear().commit();
-        DetailFragment.releasePlayer();
+        StepsFragment.releasePlayer();
     }
 
     private boolean isTwoPane() {

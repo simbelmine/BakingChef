@@ -2,6 +2,10 @@ package com.example.android.bakingchef;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.graphics.BitmapFactory;
+import android.media.session.PlaybackState;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,12 +15,27 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.android.bakingchef.helpers.TextUtils;
 import com.example.android.bakingchef.models.Recipe;
 import com.example.android.bakingchef.models.Step;
+import com.google.android.exoplayer2.ExoPlayerFactory;
+import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
+import com.google.android.exoplayer2.source.ExtractorMediaSource;
+import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
+import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
+import com.google.android.exoplayer2.trackselection.TrackSelection;
+import com.google.android.exoplayer2.trackselection.TrackSelector;
+import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
+import com.google.android.exoplayer2.upstream.BandwidthMeter;
+import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
+import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
+import com.google.android.exoplayer2.util.Util;
 
 import java.util.List;
 
@@ -28,6 +47,10 @@ public class StepsFragment extends Fragment implements View.OnClickListener {
     private Button prevStepBtn;
     private  ViewPager viewPager;
     private SharedPreferences sharedPrefs;
+
+    private static SimpleExoPlayer exoPlayer;
+    private SimpleExoPlayerView exoPlayerView;
+    private DefaultDataSourceFactory dataSourceFactory;
 
     public StepsFragment(){}
 
@@ -81,12 +104,16 @@ public class StepsFragment extends Fragment implements View.OnClickListener {
             }
         }
 
+        exoPlayerView = (SimpleExoPlayerView) getActivity().findViewById(R.id.player_view);
+        exoPlayVideoUrl(step);
+
         return rootView;
     }
 
     @Override
     public void onClick(View v) {
         LinearLayout stepsLayout = (LinearLayout) getActivity().findViewById(R.id.steps_fragment_container);
+
         int id = v.getId();
         switch (id) {
             case R.id.button_next_step:
@@ -96,6 +123,8 @@ public class StepsFragment extends Fragment implements View.OnClickListener {
                 }
                 step++;
                 showStepDetails(stepsLayout, step);
+                releasePlayer();
+                exoPlayVideoUrl(step);
                 break;
             case R.id.button_prev_step:
                 if(!isStepsOnFocus()) {
@@ -104,6 +133,8 @@ public class StepsFragment extends Fragment implements View.OnClickListener {
                 }
                 step--;
                 showStepDetails(stepsLayout, step);
+                releasePlayer();
+                exoPlayVideoUrl(step);
                 break;
         }
 
@@ -114,6 +145,17 @@ public class StepsFragment extends Fragment implements View.OnClickListener {
         }
 
         saveCurrentStep();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        if(exoPlayer != null) {
+            if (exoPlayer.getPlaybackState() != PlaybackState.STATE_PLAYING) {
+                exoPlayer.seekTo(0);
+            }
+            exoPlayer.setPlayWhenReady(false);
+        }
     }
 
     private void showStepDetailsTwoPane(int stepIdx) {
@@ -228,6 +270,67 @@ public class StepsFragment extends Fragment implements View.OnClickListener {
     private void saveCurrentStep() {
         if(sharedPrefs != null) {
             sharedPrefs.edit().putInt(DetailActivity.CURRENT_STEP, step).commit();
+        }
+    }
+
+    private void initializeExoPlayer(Uri uri) {
+        if(exoPlayerView == null) return;
+        if(exoPlayer != null) {
+            exoPlayerView.setPlayer(exoPlayer);
+            return;
+        }
+
+        BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
+        TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory(bandwidthMeter);
+        TrackSelector trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
+
+        exoPlayer = ExoPlayerFactory.newSimpleInstance(getContext(), trackSelector);
+        exoPlayerView.setPlayer(exoPlayer);
+
+        dataSourceFactory = new DefaultDataSourceFactory(getContext(),
+                Util.getUserAgent(getContext(), getResources().getString(R.string.app_name)), new DefaultBandwidthMeter());
+
+        MediaSource mediaSource = new ExtractorMediaSource(
+                uri,
+                dataSourceFactory,
+                new DefaultExtractorsFactory(),
+                null,
+                null
+        );
+
+        exoPlayer.prepare(mediaSource);
+        exoPlayer.setPlayWhenReady(true);
+    }
+
+    private void exoPlayVideoUrl(int step) {
+        String videoURL = recipe.getSteps().get(step).getVideoURL();
+        if(!videoURL.isEmpty()) {
+            setExoPlayerVisibility(true);
+            initializeExoPlayer(Uri.parse(videoURL));
+        }
+        else {
+            setExoPlayerVisibility(false);
+        }
+    }
+
+    private void setExoPlayerVisibility(boolean isVisible) {
+        ImageView emptyVideoImg = (ImageView) getActivity().findViewById(R.id.empty_video_img);
+        if(emptyVideoImg == null) return;
+        if(isVisible) {
+            emptyVideoImg.setVisibility(View.INVISIBLE);
+            exoPlayerView.setVisibility(View.VISIBLE);
+        }
+        else {
+            emptyVideoImg.setVisibility(View.VISIBLE);
+            exoPlayerView.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    public static void releasePlayer() {
+        if(exoPlayer != null) {
+            exoPlayer.stop();
+            exoPlayer.release();
+            exoPlayer = null;
         }
     }
 }

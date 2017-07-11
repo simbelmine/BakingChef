@@ -49,10 +49,6 @@ public class DetailFragment extends Fragment {
     private ViewPager viewPager;
 
     private TextView titleView;
-    private static SimpleExoPlayer exoPlayer;
-    private SimpleExoPlayerView exoPlayerView;
-
-    private String songUrl = "http://www.mfiles.co.uk/mp3-downloads/edvard-grieg-peer-gynt1-morning-mood-piano.mp3";
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -91,38 +87,7 @@ public class DetailFragment extends Fragment {
             titleView.setText(recipe.getName());
         }
 
-        exoPlayerView.setDefaultArtwork(BitmapFactory.decodeResource(getResources(), R.drawable.recipe_video_720x340));
-        initializeExoPlayer(Uri.parse(songUrl));
-
-
         return rootView;
-    }
-
-    private void initializeExoPlayer(Uri uri) {
-        if(exoPlayer != null) {
-            exoPlayerView.setPlayer(exoPlayer);
-            return;
-        }
-
-        BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
-        TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory(bandwidthMeter);
-        TrackSelector trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
-
-        exoPlayer = ExoPlayerFactory.newSimpleInstance(getContext(), trackSelector);
-        exoPlayerView.setPlayer(exoPlayer);
-
-        DefaultDataSourceFactory dataSourceFactory = new DefaultDataSourceFactory(getContext(),
-                Util.getUserAgent(getContext(), getResources().getString(R.string.app_name)), new DefaultBandwidthMeter());
-        MediaSource mediaSource = new ExtractorMediaSource(
-                uri,
-                dataSourceFactory,
-                new DefaultExtractorsFactory(),
-                null,
-                null
-        );
-
-        exoPlayer.prepare(mediaSource);
-        exoPlayer.setPlayWhenReady(true);
     }
 
     private void setupViewPager() {
@@ -138,12 +103,5 @@ public class DetailFragment extends Fragment {
         titleView = (TextView) rootView.findViewById(R.id.item_detail);
         viewPager = (ViewPager) rootView.findViewById(R.id.viewpager);
         tabLayout = (TabLayout) rootView.findViewById(R.id.tabs);
-        exoPlayerView = (SimpleExoPlayerView) rootView.findViewById(R.id.player_view);
-    }
-
-    public static void releasePlayer() {
-        exoPlayer.stop();
-        exoPlayer.release();
-        exoPlayer = null;
     }
 }
