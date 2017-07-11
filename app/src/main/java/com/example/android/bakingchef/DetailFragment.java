@@ -97,12 +97,15 @@ public class DetailFragment extends Fragment implements ExoPlayer.EventListener 
         }
 
         exoPlayerView.setDefaultArtwork(BitmapFactory.decodeResource(getResources(), R.drawable.recipe_video_720x340));
-
-        //
-        initializePlayer(Uri.parse(songUrl));
-//        initializeMediaSession();
+        initializeExoPlayer(Uri.parse(songUrl));
 
         return rootView;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        releasePlayer();
     }
 
     @Override
@@ -140,7 +143,7 @@ public class DetailFragment extends Fragment implements ExoPlayer.EventListener 
 
     }
 
-    private void initializePlayer(Uri uri) {
+    private void initializeExoPlayer(Uri uri) {
         if(exoPlayer != null) return;
 
         BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
@@ -179,5 +182,11 @@ public class DetailFragment extends Fragment implements ExoPlayer.EventListener 
         viewPager = (ViewPager) rootView.findViewById(R.id.viewpager);
         tabLayout = (TabLayout) rootView.findViewById(R.id.tabs);
         exoPlayerView = (SimpleExoPlayerView) rootView.findViewById(R.id.player_view);
+    }
+
+    private void releasePlayer() {
+        exoPlayer.stop();
+        exoPlayer.release();
+        exoPlayer = null;
     }
 }

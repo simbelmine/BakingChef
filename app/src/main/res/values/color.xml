@@ -10,9 +10,7 @@
     <color name="button_inactive">#804c3d3d</color>
     <color name="secondary_txt_color">#118888</color>
 
-    <!--
-<color name="colorPrimary">#3F51B5</color>
-<color name="colorPrimaryDark">#303F9F</color>
-<color name="colorAccent">#FF4081</color>
-    -->
+    <color name="exo_playback_bg">#66000000</color>
+    <color name="exo_time_txt">#FFBEBEBE</color>
+    <color name="exo_bg">#000000</color>
 </resources>
