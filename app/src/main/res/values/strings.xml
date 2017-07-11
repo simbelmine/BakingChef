@@ -6,4 +6,7 @@
 
     <string name="prev_btn">Previous</string>
     <string name="next_btn">Next</string>
+
+    <string name="fragment_ingredients_name">Ingredients</string>
+    <string name="fragment_steps_name">Steps</string>
 </resources>
