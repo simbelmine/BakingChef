@@ -6,26 +6,21 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.android.bakingchef.models.Recipe;
-import com.google.android.exoplayer2.ExoPlaybackException;
-import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.ExoPlayerFactory;
-import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
-import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
-import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.BandwidthMeter;
@@ -39,7 +34,7 @@ import com.google.android.exoplayer2.util.Util;
  * in two-pane mode (on tablets) or a {@link DetailActivity}
  * on handsets.
  */
-public class DetailFragment extends Fragment implements ExoPlayer.EventListener {
+public class DetailFragment extends Fragment {
     /**
      * The fragment argument representing the item ID that this fragment
      * represents.
@@ -54,7 +49,7 @@ public class DetailFragment extends Fragment implements ExoPlayer.EventListener 
     private ViewPager viewPager;
 
     private TextView titleView;
-    private SimpleExoPlayer exoPlayer;
+    private static SimpleExoPlayer exoPlayer;
     private SimpleExoPlayerView exoPlayerView;
 
     private String songUrl = "http://www.mfiles.co.uk/mp3-downloads/edvard-grieg-peer-gynt1-morning-mood-piano.mp3";
@@ -99,52 +94,15 @@ public class DetailFragment extends Fragment implements ExoPlayer.EventListener 
         exoPlayerView.setDefaultArtwork(BitmapFactory.decodeResource(getResources(), R.drawable.recipe_video_720x340));
         initializeExoPlayer(Uri.parse(songUrl));
 
+
         return rootView;
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        releasePlayer();
-    }
-
-    @Override
-    public void onLoadingChanged(boolean isLoading) {
-
-    }
-
-    @Override
-    public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
-
-    }
-
-    @Override
-    public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-
-    }
-
-    @Override
-    public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {
-
-    }
-
-    @Override
-    public void onPlayerError(ExoPlaybackException error) {
-
-    }
-
-    @Override
-    public void onTimelineChanged(Timeline timeline, Object manifest) {
-
-    }
-
-    @Override
-    public void onPositionDiscontinuity() {
-
-    }
-
     private void initializeExoPlayer(Uri uri) {
-        if(exoPlayer != null) return;
+        if(exoPlayer != null) {
+            exoPlayerView.setPlayer(exoPlayer);
+            return;
+        }
 
         BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
         TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory(bandwidthMeter);
@@ -163,7 +121,6 @@ public class DetailFragment extends Fragment implements ExoPlayer.EventListener 
                 null
         );
 
-        exoPlayer.addListener(this);
         exoPlayer.prepare(mediaSource);
         exoPlayer.setPlayWhenReady(true);
     }
@@ -184,7 +141,7 @@ public class DetailFragment extends Fragment implements ExoPlayer.EventListener 
         exoPlayerView = (SimpleExoPlayerView) rootView.findViewById(R.id.player_view);
     }
 
-    private void releasePlayer() {
+    public static void releasePlayer() {
         exoPlayer.stop();
         exoPlayer.release();
         exoPlayer = null;
