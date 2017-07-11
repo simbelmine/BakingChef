@@ -39,7 +39,7 @@
             android:layout_marginRight="@dimen/standard_margin"
             android:background="@drawable/selector"
             android:textColor="@color/main_txt_color"
-            android:text="Previous"/>
+            android:text="@string/prev_btn"/>
         <Button
             android:id="@+id/button_next_step"
             android:layout_width="@dimen/button_width"
@@ -48,7 +48,7 @@
             android:background="@drawable/selector"
             android:textColor="@color/main_txt_color"
             android:layout_toRightOf="@+id/button_prev_step"
-            android:text="Next"/>
+            android:text="@string/next_btn"/>
     </RelativeLayout>
 
 </LinearLayout>

@@ -56,7 +56,7 @@
             android:layout_weight="1"
             android:background="@color/colorPrimary"
             android:textColor="@color/main_txt_color"
-            android:text="Previous"/>
+            android:text="@string/prev_btn"/>
         <Button
             android:id="@+id/button_next_step"
             android:layout_width="0dp"
@@ -64,7 +64,7 @@
             android:layout_weight="1"
             android:background="@color/colorPrimary"
             android:textColor="@color/main_txt_color"
-            android:text="Next"/>
+            android:text="@string/next_btn"/>
     </LinearLayout>
 
 </LinearLayout>

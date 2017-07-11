@@ -3,4 +3,7 @@
     <string name="title_item_detail">Item Detail</string>
 
     <string name="servings_ingredients">Ingredients for </string>
+
+    <string name="prev_btn">Previous</string>
+    <string name="next_btn">Next</string>
 </resources>
