@@ -30,7 +30,6 @@ import java.util.Set;
 
 
 public class IngredientsFragment extends Fragment implements CompoundButton.OnCheckedChangeListener {
-    private static final String CHECKED_INGREDIENTS = "CheckedIngredients";
     private Set<String> checkedIngredientsSet;
     private SharedPreferences sharedPrefs;
     private Recipe recipe;
@@ -47,8 +46,8 @@ public class IngredientsFragment extends Fragment implements CompoundButton.OnCh
             recipe = getArguments().getParcelable(DetailActivity.RECIPE);
         }
 
-        if(sharedPrefs != null && sharedPrefs.contains(CHECKED_INGREDIENTS)) {
-            String json = sharedPrefs.getString(CHECKED_INGREDIENTS, null);
+        if(sharedPrefs != null && sharedPrefs.contains(DetailActivity.CHECKED_INGREDIENTS)) {
+            String json = sharedPrefs.getString(DetailActivity.CHECKED_INGREDIENTS, null);
             Type type = new TypeToken<HashSet<String>>() {}.getType();
             checkedIngredientsSet = (HashSet<String>) jsonToCollection(json, type);
         }
@@ -77,7 +76,7 @@ public class IngredientsFragment extends Fragment implements CompoundButton.OnCh
         super.onConfigurationChanged(newConfig);
         if(checkedIngredientsSet != null) {
             String json = collectionToJson(checkedIngredientsSet);
-            sharedPrefs.edit().putString(CHECKED_INGREDIENTS, json).commit();
+            sharedPrefs.edit().putString(DetailActivity.CHECKED_INGREDIENTS, json).commit();
 
             for(String s: checkedIngredientsSet) {
                 Log.v(MainActivity.TAG, s);

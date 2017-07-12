@@ -20,6 +20,7 @@ import com.example.android.bakingchef.helpers.PaneUtils;
 public class DetailActivity extends AppCompatActivity {
     public static final String RECIPE = "recipe_list";
     public static final String CURRENT_STEP = "current_step";
+    public static final String CHECKED_INGREDIENTS = "CheckedIngredients";
     public static final String DETAILS_PREFS = "DetailsPrefs";
     public static final String IS_PANE_OPENED = "IsSlidingPaneWasOpened";
     public static final int PANE_DELAY = 1000;
@@ -128,7 +129,7 @@ public class DetailActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        sharedPrefs.edit().clear().commit();
+        clearSharedPreferences();
         StepsFragment.releasePlayer();
     }
 
@@ -137,5 +138,10 @@ public class DetailActivity extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+    }
+
+    private void clearSharedPreferences() {
+        sharedPrefs.edit().remove(CURRENT_STEP).commit();
+        sharedPrefs.edit().remove(CHECKED_INGREDIENTS).commit();
     }
 }

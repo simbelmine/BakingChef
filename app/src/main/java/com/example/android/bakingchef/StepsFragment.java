@@ -110,7 +110,7 @@ public class StepsFragment extends Fragment implements View.OnClickListener {
 
         slidingPaneLayout = (SlidingPaneLayout) getActivity().findViewById(R.id.sliding_pane_layout);
         boolean isPaneWasOpened = sharedPrefs.getBoolean(DetailActivity.IS_PANE_OPENED, false);
-        if(!isPaneWasOpened) {
+        if(PaneUtils.isLandscape(getActivity()) && !isPaneWasOpened) {
             slidingPaneLayout.openPane();
             new Handler().postDelayed(openDrawerRunnable(), DetailActivity.PANE_DELAY);
         }
