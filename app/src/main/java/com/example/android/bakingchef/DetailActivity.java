@@ -58,7 +58,7 @@ public class DetailActivity extends AppCompatActivity {
                     .add(R.id.details_container_layout, fragment)
                     .commit();
 
-            if(isTwoPane) {
+            if(isTwoPane && isTablet()) {
                 IngredientsFragment ingredientsFragment = new IngredientsFragment();
                 ingredientsFragment.setArguments(arguments);
                 getSupportFragmentManager().beginTransaction()
@@ -98,7 +98,7 @@ public class DetailActivity extends AppCompatActivity {
                 .replace(R.id.details_container_layout, fragment, DETAILS_FRAGMENT)
                 .commit();
 
-        if(isTwoPane) {
+        if(isTwoPane && isTablet()) {
             IngredientsFragment ingredientsFragment = new IngredientsFragment();
             ingredientsFragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction()
@@ -139,6 +139,9 @@ public class DetailActivity extends AppCompatActivity {
 
     private boolean isTwoPane() {
         return findViewById(R.id.steps_container) != null;
+    }
+    private boolean isTablet() {
+        return getResources().getBoolean(R.bool.is_tablet);
     }
 
     private void setupActionBar() {
