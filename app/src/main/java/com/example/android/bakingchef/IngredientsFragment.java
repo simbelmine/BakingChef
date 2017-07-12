@@ -16,6 +16,7 @@ import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.android.bakingchef.helpers.PaneUtils;
 import com.example.android.bakingchef.helpers.TextUtils;
 import com.example.android.bakingchef.models.Ingredient;
 import com.example.android.bakingchef.models.Recipe;
@@ -33,7 +34,6 @@ public class IngredientsFragment extends Fragment implements CompoundButton.OnCh
     private Set<String> checkedIngredientsSet;
     private SharedPreferences sharedPrefs;
     private Recipe recipe;
-    private boolean isTwoPane;
 
     public IngredientsFragment(){}
 
@@ -45,9 +45,6 @@ public class IngredientsFragment extends Fragment implements CompoundButton.OnCh
 
         if (getArguments().containsKey(DetailActivity.RECIPE)) {
             recipe = getArguments().getParcelable(DetailActivity.RECIPE);
-        }
-        if (getArguments().containsKey(DetailActivity.IS_TWO_PANE)) {
-            isTwoPane = getArguments().getBoolean(DetailActivity.IS_TWO_PANE);
         }
 
         if(sharedPrefs != null && sharedPrefs.contains(CHECKED_INGREDIENTS)) {
@@ -78,7 +75,6 @@ public class IngredientsFragment extends Fragment implements CompoundButton.OnCh
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        Gson gson = new Gson();
         if(checkedIngredientsSet != null) {
             String json = collectionToJson(checkedIngredientsSet);
             sharedPrefs.edit().putString(CHECKED_INGREDIENTS, json).commit();
@@ -103,7 +99,7 @@ public class IngredientsFragment extends Fragment implements CompoundButton.OnCh
         TextView servingsView = new TextView(getContext());
         int servings = recipe.getServings();
         servingsView.setText(getResources().getString(R.string.servings_ingredients) + " " + String.valueOf(servings));
-        TextUtils.setTextStyle(getContext(), servingsView, true);
+        TextUtils.setTextStyle(getContext(), servingsView, DetailActivity.LARGE_APPEARANCE);
         layout.addView(servingsView);
     }
 
@@ -128,7 +124,7 @@ public class IngredientsFragment extends Fragment implements CompoundButton.OnCh
 
             String ingredientStr = buildIngredientText(ingredient);
             textView.setText(ingredientStr);
-            TextUtils.setTextStyle(getContext(), textView, false);
+            TextUtils.setTextStyle(getContext(), textView, DetailActivity.MEDIUM_APPEARANCE);
 
             singleLayout.addView(checkBox);
             singleLayout.addView(textView);
@@ -146,7 +142,7 @@ public class IngredientsFragment extends Fragment implements CompoundButton.OnCh
         builder.append(String.valueOf(quantity) + " ");
         builder.append(measure + " ");
         builder.append(ingredientStr + "\n");
-        if(!isTwoPane) builder.append("\n");
+        if(!PaneUtils.isTwoPane(getActivity())) builder.append("\n");
 
         return builder.toString();
     }

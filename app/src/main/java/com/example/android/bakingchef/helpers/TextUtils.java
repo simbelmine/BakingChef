@@ -1,36 +1,45 @@
 package com.example.android.bakingchef.helpers;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.os.Build;
 import android.widget.TextView;
 
+import com.example.android.bakingchef.DetailActivity;
 import com.example.android.bakingchef.R;
 
-/**
- * Created by Sve on 7/9/17.
- */
-
 public class TextUtils {
-    public static void setTextStyle(Context context, TextView textView, boolean isHeader) {
-        setTextAppearance(context, textView, isHeader);
+    public static void setTextStyle(Context context, TextView textView, String appearance) {
+        setTextAppearance(context, textView, appearance);
         textView.setPadding(0, 0, 0, (int)context.getResources().getDimension(R.dimen.standard_padding));
     }
 
-    private static void setTextAppearance(Context context, TextView textView, boolean isHeader) {
+    private static void setTextAppearance(Context context, TextView textView, String appearance) {
+
         if(Build.VERSION.SDK_INT < 23) {
-            if(isHeader) {
-                textView.setTextAppearance(context, R.style.TextLarge);
-            }
-            else {
-                textView.setTextAppearance(context, R.style.TextMedium);
+            switch (appearance) {
+                case DetailActivity.SMALL_APPEARANCE:
+                    textView.setTextAppearance(context, R.style.TextSmall);
+                    break;
+                case DetailActivity.MEDIUM_APPEARANCE:
+                    textView.setTextAppearance(context, R.style.TextMedium);
+                    break;
+                case DetailActivity.LARGE_APPEARANCE:
+                    textView.setTextAppearance(context, R.style.TextLarge);
+                    break;
             }
         }
         else {
-            if(isHeader) {
-                textView.setTextAppearance(R.style.TextLarge);
-            }
-            else {
-                textView.setTextAppearance(R.style.TextMedium);
+            switch (appearance) {
+                case DetailActivity.SMALL_APPEARANCE:
+                    textView.setTextAppearance(R.style.TextSmall);
+                    break;
+                case DetailActivity.MEDIUM_APPEARANCE:
+                    textView.setTextAppearance(R.style.TextMedium);
+                    break;
+                case DetailActivity.LARGE_APPEARANCE:
+                    textView.setTextAppearance(R.style.TextLarge);
+                    break;
             }
         }
     }

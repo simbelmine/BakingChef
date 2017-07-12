@@ -3,7 +3,6 @@ package com.example.android.bakingchef;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.graphics.BitmapFactory;
 import android.media.session.PlaybackState;
 import android.net.Uri;
 import android.os.Bundle;
@@ -19,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.android.bakingchef.helpers.PaneUtils;
 import com.example.android.bakingchef.helpers.TextUtils;
 import com.example.android.bakingchef.models.Recipe;
 import com.example.android.bakingchef.models.Step;
@@ -41,7 +41,6 @@ import java.util.List;
 
 public class StepsFragment extends Fragment implements View.OnClickListener {
     private Recipe recipe;
-    private boolean isTwoPane;
     private int step;
     private Button nextStepBtn;
     private Button prevStepBtn;
@@ -61,9 +60,6 @@ public class StepsFragment extends Fragment implements View.OnClickListener {
 
         if (getArguments().containsKey(DetailActivity.RECIPE)) {
             recipe = getArguments().getParcelable(DetailActivity.RECIPE);
-        }
-        if (getArguments().containsKey(DetailActivity.IS_TWO_PANE)) {
-            isTwoPane = getArguments().getBoolean(DetailActivity.IS_TWO_PANE);
         }
 
         nextStepBtn = (Button) getActivity().findViewById(R.id.button_next_step);
@@ -92,15 +88,16 @@ public class StepsFragment extends Fragment implements View.OnClickListener {
             LinearLayout stepsLayout = (LinearLayout) rootView.findViewById(R.id.steps_fragment_container);
             if(stepsLayout == null) return rootView;
 
-            if(isTwoPane) {
-                addStepsViews(stepsLayout);
-                showStepDetailsTwoPane(step);
-            }
             else {
-                if(step > 0 && !isStepsOnFocus()) {
-                    setFocusOnStep();
+                if (PaneUtils.isTwoPane(getActivity()) || PaneUtils.isLandscape(getActivity())) {
+                    addStepsViews(stepsLayout);
+                    showStepDetailsTwoPane(step);
+                } else {
+                    if (step > 0 && !isStepsOnFocus()) {
+                        setFocusOnStep();
+                    }
+                    showStepDetails(stepsLayout, step);
                 }
-                showStepDetails(stepsLayout, step);
             }
         }
 
@@ -138,10 +135,13 @@ public class StepsFragment extends Fragment implements View.OnClickListener {
                 break;
         }
 
-        if(v instanceof Button && isTwoPane) {
+        if(v instanceof Button &&
+                (PaneUtils.isTwoPane(getActivity()) || PaneUtils.isLandscape(getActivity()))) {
             int tag = (int)v.getTag();
             step = tag;
             showStepDetailsTwoPane(tag);
+            releasePlayer();
+            exoPlayVideoUrl(step);
         }
 
         saveCurrentStep();
@@ -172,12 +172,22 @@ public class StepsFragment extends Fragment implements View.OnClickListener {
         String sDesc = step.getShortDescription();
         String lDesc = step.getDescription();
 
+        TextUtils.setTextStyle(getContext(), sDescView, DetailActivity.LARGE_APPEARANCE);
         sDescView.setText(sDesc);
-        TextUtils.setTextStyle(getContext(), sDescView, true);
-        lDescView.setText(lDesc);
-        TextUtils.setTextStyle(getContext(), lDescView, false);
 
-        stepsDetailsContainer.addView(sDescView);
+        if(!PaneUtils.isTablet(getActivity()) && PaneUtils.isLandscape(getActivity())) {
+            TextUtils.setTextStyle(getContext(), lDescView, DetailActivity.SMALL_APPEARANCE);
+            int padding = (int)getResources().getDimension(R.dimen.description_video_padding);
+            lDescView.setPadding(padding,padding,padding, padding);
+        }
+        else {
+            TextUtils.setTextStyle(getContext(), lDescView, DetailActivity.MEDIUM_APPEARANCE);
+        }
+        lDescView.setText(lDesc);
+
+        if(PaneUtils.isTwoPane(getActivity()) && PaneUtils.isTablet(getActivity())) {
+            stepsDetailsContainer.addView(sDescView);
+        }
         stepsDetailsContainer.addView(lDescView);
     }
 
@@ -212,10 +222,11 @@ public class StepsFragment extends Fragment implements View.OnClickListener {
 
         TextView shortDescriptionView = new TextView(getContext());
         shortDescriptionView.setText(shortDescription);
-        TextUtils.setTextStyle(getContext(), shortDescriptionView, true);
+        TextUtils.setTextStyle(getContext(), shortDescriptionView, DetailActivity.LARGE_APPEARANCE);
+
         TextView descriptionView = new TextView(getContext());
         descriptionView.setText(description);
-        TextUtils.setTextStyle(getContext(), descriptionView, false);
+        TextUtils.setTextStyle(getContext(), descriptionView, DetailActivity.MEDIUM_APPEARANCE);
 
         stepsLayout.addView(shortDescriptionView);
         stepsLayout.addView(descriptionView);

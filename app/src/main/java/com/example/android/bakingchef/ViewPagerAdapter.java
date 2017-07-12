@@ -14,7 +14,6 @@ import java.util.List;
 
 public class ViewPagerAdapter extends FragmentStatePagerAdapter {
     private Recipe recipe;
-    private boolean isTwoPane;
     private final List<Fragment> mFragmentList = new ArrayList<>();
     private final List<String> mFragmentTitleList = new ArrayList<>();
 
@@ -48,9 +47,5 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
     public void setRecipe(Recipe recipe) {
         this.recipe = recipe;
-    }
-
-    public void setIsTwoPane(boolean isTwoPane) {
-        this.isTwoPane = isTwoPane;
     }
 }

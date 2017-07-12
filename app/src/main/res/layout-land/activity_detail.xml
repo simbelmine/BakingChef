@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.SlidingPaneLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:id="@+id/ingredients_steps_container"
+        android:layout_width="@dimen/step_layput_height"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/item_detail"
+                style="?android:attr/textAppearanceMedium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:textIsSelectable="true"
+                android:textColor="@color/colorPrimary"
+                android:gravity="center" />
+            <LinearLayout
+                android:id="@+id/ingredients_container"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/steps_container"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/details_container_layout"
+        android:orientation="vertical"
+        android:layout_width="400dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:layout_toRightOf="@+id/ingredients_steps_container"
+        />
+</android.support.v4.widget.SlidingPaneLayout>

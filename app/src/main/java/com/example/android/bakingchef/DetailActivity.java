@@ -9,6 +9,8 @@ import android.support.v7.app.ActionBar;
 import android.support.v4.app.NavUtils;
 import android.view.MenuItem;
 
+import com.example.android.bakingchef.helpers.PaneUtils;
+
 /**
  * An activity representing a single Item detail screen. This
  * activity is only used narrow width devices. On tablet-size devices,
@@ -23,7 +25,10 @@ public class DetailActivity extends AppCompatActivity {
     private static final String DETAILS_FRAGMENT = "DetailsFragment";
     private static final String STEPS_FRAGMENT = "StepsFragment";
     private static final String INGREDIENTS_FRAGMENT = "IngredientsFragment";
-    private boolean isTwoPane;
+    public static final String SMALL_APPEARANCE = "SmallTextAppearance";
+    public static final String MEDIUM_APPEARANCE = "MediumTextAppearance";
+    public static final String LARGE_APPEARANCE = "LargeTextAppearance";
+
     private SharedPreferences sharedPrefs;
 
     @Override
@@ -33,7 +38,7 @@ public class DetailActivity extends AppCompatActivity {
         sharedPrefs = getSharedPreferences(DETAILS_PREFS, MODE_PRIVATE);
 
         setupActionBar();
-        isTwoPane = isTwoPane();
+//        isTwoPane = PaneUtils.isTwoPane(this);
 
                 // savedInstanceState is non-null when there is fragment state
         // saved from previous configurations of this activity
@@ -50,7 +55,6 @@ public class DetailActivity extends AppCompatActivity {
             // using a fragment transaction.
             Bundle arguments = new Bundle();
             arguments.putParcelable(RECIPE, getIntent().getParcelableExtra(RECIPE));
-            arguments.putBoolean(IS_TWO_PANE, isTwoPane);
 
             DetailFragment fragment = new DetailFragment();
             fragment.setArguments(arguments);
@@ -58,7 +62,8 @@ public class DetailActivity extends AppCompatActivity {
                     .add(R.id.details_container_layout, fragment)
                     .commit();
 
-            if(isTwoPane && isTablet()) {
+
+            if(PaneUtils.isTwoPane(this) && PaneUtils.isTablet(this) || getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
                 IngredientsFragment ingredientsFragment = new IngredientsFragment();
                 ingredientsFragment.setArguments(arguments);
                 getSupportFragmentManager().beginTransaction()
@@ -77,20 +82,10 @@ public class DetailActivity extends AppCompatActivity {
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        // Two Pane
-            if(newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            isTwoPane = true;
-        }
-        // Single Pane
-        else {
-            isTwoPane = false;
-        }
-
         setContentView(R.layout.activity_detail);
 
         Bundle arguments = new Bundle();
         arguments.putParcelable(RECIPE, getIntent().getParcelableExtra(RECIPE));
-        arguments.putBoolean(IS_TWO_PANE, isTwoPane);
 
         DetailFragment fragment = new DetailFragment();
         fragment.setArguments(arguments);
@@ -98,7 +93,7 @@ public class DetailActivity extends AppCompatActivity {
                 .replace(R.id.details_container_layout, fragment, DETAILS_FRAGMENT)
                 .commit();
 
-        if(isTwoPane && isTablet()) {
+        if(PaneUtils.isTwoPane(this) && PaneUtils.isTablet(this) || getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             IngredientsFragment ingredientsFragment = new IngredientsFragment();
             ingredientsFragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction()
@@ -135,13 +130,6 @@ public class DetailActivity extends AppCompatActivity {
         super.onStop();
         sharedPrefs.edit().clear().commit();
         StepsFragment.releasePlayer();
-    }
-
-    private boolean isTwoPane() {
-        return findViewById(R.id.steps_container) != null;
-    }
-    private boolean isTablet() {
-        return getResources().getBoolean(R.bool.is_tablet);
     }
 
     private void setupActionBar() {

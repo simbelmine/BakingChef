@@ -1,61 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
+    android:id="@+id/exo_player_main_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:weightSum="5">
-
-    <FrameLayout
-        android:id="@+id/exo_player_main_layout"
+    android:background="@color/exo_bg">
+    <ImageView
+        android:id="@+id/empty_video_img"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="2"
-        android:background="@color/exo_bg">
-        <ImageView
-            android:id="@+id/empty_video_img"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="centerCrop"
-            android:src="@drawable/recipe_video_720x340"/>
-        <com.google.android.exoplayer2.ui.SimpleExoPlayerView
-            android:id="@+id/player_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:show_timeout="2500"/>
-    </FrameLayout>
-
-    <RelativeLayout
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/recipe_video_720x340"/>
+    <com.google.android.exoplayer2.ui.SimpleExoPlayerView
+        android:id="@+id/player_view"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="2.5">
-
-        <include layout="@layout/tab_details_layout"/>
-
-    </RelativeLayout>
-    <RelativeLayout
-        android:id="@+id/buttons_container"
+        android:layout_height="match_parent"
+        app:show_timeout="2500"/>
+    <LinearLayout
+        android:id="@+id/steps_details_container"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.5"
-        android:gravity="center">
-        <Button
-            android:id="@+id/button_prev_step"
-            android:layout_width="@dimen/button_width"
-            android:layout_height="@dimen/button_height"
-            android:layout_marginRight="@dimen/standard_margin"
-            android:background="@drawable/selector"
-            android:textColor="@color/main_txt_color"
-            android:text="@string/prev_btn"/>
-        <Button
-            android:id="@+id/button_next_step"
-            android:layout_width="@dimen/button_width"
-            android:layout_height="@dimen/button_height"
-            android:layout_marginLeft="@dimen/standard_margin"
-            android:background="@drawable/selector"
-            android:textColor="@color/main_txt_color"
-            android:layout_toRightOf="@+id/button_prev_step"
-            android:text="@string/next_btn"/>
-    </RelativeLayout>
-
-</LinearLayout>
+        android:layout_height="wrap_content"
+        android:background="@color/colorAccentTransparent">
+    </LinearLayout>
+</FrameLayout>
