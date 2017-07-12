@@ -6,9 +6,11 @@ import android.content.res.Configuration;
 import android.media.session.PlaybackState;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.SlidingPaneLayout;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,6 +52,8 @@ public class StepsFragment extends Fragment implements View.OnClickListener {
     private static SimpleExoPlayer exoPlayer;
     private SimpleExoPlayerView exoPlayerView;
     private DefaultDataSourceFactory dataSourceFactory;
+
+    private SlidingPaneLayout slidingPaneLayout;
 
     public StepsFragment(){}
 
@@ -103,6 +107,13 @@ public class StepsFragment extends Fragment implements View.OnClickListener {
 
         exoPlayerView = (SimpleExoPlayerView) getActivity().findViewById(R.id.player_view);
         exoPlayVideoUrl(step);
+
+        slidingPaneLayout = (SlidingPaneLayout) getActivity().findViewById(R.id.sliding_pane_layout);
+        boolean isPaneWasOpened = sharedPrefs.getBoolean(DetailActivity.IS_PANE_OPENED, false);
+        if(!isPaneWasOpened) {
+            slidingPaneLayout.openPane();
+            new Handler().postDelayed(openDrawerRunnable(), DetailActivity.PANE_DELAY);
+        }
 
         return rootView;
     }
@@ -349,5 +360,16 @@ public class StepsFragment extends Fragment implements View.OnClickListener {
             exoPlayer.release();
             exoPlayer = null;
         }
+    }
+
+    private Runnable openDrawerRunnable() {
+        return new Runnable() {
+
+            @Override
+            public void run() {
+                slidingPaneLayout.closePane();
+                sharedPrefs.edit().putBoolean(DetailActivity.IS_PANE_OPENED, true).commit();
+            }
+        };
     }
 }

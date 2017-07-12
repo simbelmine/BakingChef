@@ -19,9 +19,10 @@ import com.example.android.bakingchef.helpers.PaneUtils;
  */
 public class DetailActivity extends AppCompatActivity {
     public static final String RECIPE = "recipe_list";
-    public static final String IS_TWO_PANE = "is_two_pane";
     public static final String CURRENT_STEP = "current_step";
     public static final String DETAILS_PREFS = "DetailsPrefs";
+    public static final String IS_PANE_OPENED = "IsSlidingPaneWasOpened";
+    public static final int PANE_DELAY = 1000;
     private static final String DETAILS_FRAGMENT = "DetailsFragment";
     private static final String STEPS_FRAGMENT = "StepsFragment";
     private static final String INGREDIENTS_FRAGMENT = "IngredientsFragment";
@@ -38,7 +39,6 @@ public class DetailActivity extends AppCompatActivity {
         sharedPrefs = getSharedPreferences(DETAILS_PREFS, MODE_PRIVATE);
 
         setupActionBar();
-//        isTwoPane = PaneUtils.isTwoPane(this);
 
                 // savedInstanceState is non-null when there is fragment state
         // saved from previous configurations of this activity
