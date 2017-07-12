@@ -226,12 +226,18 @@ public class StepsFragment extends Fragment implements View.OnClickListener {
             if (step <= 0) {
                 nextStepBtn.setTextColor(getResources().getColor(R.color.main_txt_color));
                 prevStepBtn.setTextColor(getResources().getColor(R.color.button_inactive));
+                nextStepBtn.setEnabled(true);
+                prevStepBtn.setEnabled(false);
             } else if (recipe.getSteps() != null && step >= recipe.getSteps().size() - 1) {
                 nextStepBtn.setTextColor(getResources().getColor(R.color.button_inactive));
                 prevStepBtn.setTextColor(getResources().getColor(R.color.main_txt_color));
+                nextStepBtn.setEnabled(false);
+                prevStepBtn.setEnabled(true);
             } else {
                 nextStepBtn.setTextColor(getResources().getColor(R.color.main_txt_color));
                 prevStepBtn.setTextColor(getResources().getColor(R.color.main_txt_color));
+                nextStepBtn.setEnabled(true);
+                prevStepBtn.setEnabled(true);
             }
         }
     }
