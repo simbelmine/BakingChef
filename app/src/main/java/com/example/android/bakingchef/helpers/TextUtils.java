@@ -1,12 +1,11 @@
 package com.example.android.bakingchef.helpers;
 
 import android.content.Context;
-import android.content.res.Configuration;
 import android.os.Build;
 import android.text.Html;
 import android.widget.TextView;
 
-import com.example.android.bakingchef.DetailActivity;
+import com.example.android.bakingchef.activities.DetailActivity;
 import com.example.android.bakingchef.R;
 
 public class TextUtils {

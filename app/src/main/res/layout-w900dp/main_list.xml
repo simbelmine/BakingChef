@@ -9,7 +9,7 @@
     android:divider="?android:attr/dividerHorizontal"
     android:orientation="horizontal"
     android:showDividers="middle"
-    tools:context="com.example.android.bakingchef.MainActivity">
+    tools:context="com.example.android.bakingchef.activities.MainActivity">
 
     <!--
     This layout is a two-pane layout for the Items
@@ -27,7 +27,7 @@
         android:layout_marginRight="16dp"
         android:numColumns="auto_fit"
         app:layoutManager="GridLayoutManager"
-        tools:context="com.example.android.bakingchef.MainActivity"
+        tools:context="com.example.android.bakingchef.activities.MainActivity"
         tools:listitem="@layout/list_item_content" />
 
     <!--<FrameLayout-->

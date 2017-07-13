@@ -1,4 +1,4 @@
-package com.example.android.bakingchef;
+package com.example.android.bakingchef.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -6,6 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.android.bakingchef.R;
+import com.example.android.bakingchef.RecipeOnClickListener;
+import com.example.android.bakingchef.RecipesViewHolder;
 import com.example.android.bakingchef.models.Recipe;
 import com.squareup.picasso.Picasso;
 

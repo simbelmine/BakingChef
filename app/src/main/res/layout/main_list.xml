@@ -10,5 +10,5 @@
     android:layout_marginLeft="8dp"
     android:layout_marginRight="8dp"
     app:layoutManager="LinearLayoutManager"
-    tools:context="com.example.android.bakingchef.MainActivity"
+    tools:context="com.example.android.bakingchef.activities.MainActivity"
     tools:listitem="@layout/list_item_content" />

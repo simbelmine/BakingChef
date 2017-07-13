@@ -1,4 +1,4 @@
-package com.example.android.bakingchef;
+package com.example.android.bakingchef.activities;
 
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -13,6 +13,9 @@ import android.util.Log;
 import android.view.View;
 
 
+import com.example.android.bakingchef.R;
+import com.example.android.bakingchef.RecipeOnClickListener;
+import com.example.android.bakingchef.adapters.RecipesListAdapter;
 import com.example.android.bakingchef.models.Recipe;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;

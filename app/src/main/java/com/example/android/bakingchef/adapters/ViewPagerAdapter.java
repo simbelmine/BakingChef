@@ -1,12 +1,11 @@
-package com.example.android.bakingchef;
+package com.example.android.bakingchef.adapters;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.util.Log;
 
+import com.example.android.bakingchef.activities.DetailActivity;
 import com.example.android.bakingchef.models.Recipe;
 
 import java.util.ArrayList;

@@ -37,7 +37,7 @@
         android:background="@color/colorPrimary"
         android:gravity="center"
         tools:text="My Recipe"
-        tools:context="com.example.android.bakingchef.DetailFragment" />
+        tools:context="com.example.android.bakingchef.fragments.DetailFragment" />
 
     <LinearLayout
         android:id="@+id/steps_details_container"

@@ -1,4 +1,4 @@
-package com.example.android.bakingchef;
+package com.example.android.bakingchef.activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -9,6 +9,10 @@ import android.support.v7.app.ActionBar;
 import android.support.v4.app.NavUtils;
 import android.view.MenuItem;
 
+import com.example.android.bakingchef.fragments.DetailFragment;
+import com.example.android.bakingchef.fragments.IngredientsFragment;
+import com.example.android.bakingchef.R;
+import com.example.android.bakingchef.fragments.StepsFragment;
 import com.example.android.bakingchef.helpers.PaneUtils;
 
 /**

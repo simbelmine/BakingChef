@@ -10,5 +10,5 @@
     android:layout_marginRight="8dp"
     android:numColumns="auto_fit"
     app:layoutManager="GridLayoutManager"
-    tools:context="com.example.android.bakingchef.MainActivity"
+    tools:context="com.example.android.bakingchef.activities.MainActivity"
     tools:listitem="@layout/list_item_content" />

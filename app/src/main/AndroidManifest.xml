@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name=".activities.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -21,14 +21,14 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".DetailActivity"
+            android:name=".activities.DetailActivity"
             android:label="@string/title_item_detail"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName=".activities.MainActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:configChanges="orientation|screenSize"  >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.android.bakingchef.MainActivity" />
+                android:value="com.example.android.bakingchef.activities.MainActivity" />
         </activity>
     </application>
 

@@ -1,6 +1,5 @@
-package com.example.android.bakingchef;
+package com.example.android.bakingchef.fragments;
 
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -10,6 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.android.bakingchef.R;
+import com.example.android.bakingchef.activities.DetailActivity;
+import com.example.android.bakingchef.activities.MainActivity;
+import com.example.android.bakingchef.adapters.ViewPagerAdapter;
 import com.example.android.bakingchef.helpers.PaneUtils;
 import com.example.android.bakingchef.models.Recipe;
 

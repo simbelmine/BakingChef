@@ -1,4 +1,4 @@
-package com.example.android.bakingchef;
+package com.example.android.bakingchef.fragments;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -16,6 +16,9 @@ import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.android.bakingchef.R;
+import com.example.android.bakingchef.activities.DetailActivity;
+import com.example.android.bakingchef.activities.MainActivity;
 import com.example.android.bakingchef.helpers.PaneUtils;
 import com.example.android.bakingchef.helpers.TextUtils;
 import com.example.android.bakingchef.models.Ingredient;
