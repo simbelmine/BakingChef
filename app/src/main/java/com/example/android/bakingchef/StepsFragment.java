@@ -92,17 +92,17 @@ public class StepsFragment extends Fragment implements View.OnClickListener {
             LinearLayout stepsLayout = (LinearLayout) rootView.findViewById(R.id.steps_fragment_container);
             if(stepsLayout == null) return rootView;
 
-            else {
-                if (PaneUtils.isTwoPane(getActivity()) || PaneUtils.isLandscape(getActivity())) {
-                    addStepsViews(stepsLayout);
-                    showStepDetailsTwoPane(step);
-                } else {
-                    if (step > 0 && !isStepsOnFocus()) {
-                        setFocusOnStep();
-                    }
-                    showStepDetails(stepsLayout, step);
+
+            if (PaneUtils.isTwoPane(getActivity()) || PaneUtils.isLandscape(getActivity())) {
+                addStepsViews(stepsLayout);
+                showStepDetailsTwoPane(step);
+            } else {
+                if (step > 0 && !isStepsOnFocus()) {
+                    setFocusOnStep();
                 }
+                showStepDetails(stepsLayout, step);
             }
+
         }
 
         exoPlayerView = (SimpleExoPlayerView) getActivity().findViewById(R.id.player_view);
@@ -281,8 +281,12 @@ public class StepsFragment extends Fragment implements View.OnClickListener {
             stepButton.setOnClickListener(this);
             stepButton.setTag(step.getStepId());
             stepButton.setText(shortDescription);
+            int padding = (int)getResources().getDimension(R.dimen.step_button_padding);
+            stepButton.setPadding(padding, 0, padding, 0);
             stepButton.setTextColor(getResources().getColor(R.color.main_txt_color));
             stepButton.setBackgroundResource(R.drawable.selector);
+            stepButton.setSingleLine();
+            stepButton.setEllipsize(android.text.TextUtils.TruncateAt.END);
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams((int) getResources()
                     .getDimension(R.dimen.button_width), (int) getResources().getDimension(R.dimen.button_height));
             params.setMargins(0, 0, 0, (int) getResources().getDimension(R.dimen.standard_margin));

@@ -9,6 +9,8 @@
     <dimen name="standard_padding">16dp</dimen>
     <dimen name="cards_padding">8dp</dimen>
     <dimen name="description_video_padding">8dp</dimen>
+
+    <dimen name="step_button_padding">8dp</dimen>
     <dimen name="step_button_margin">8dp</dimen>
 
     <dimen name="step_layput_height">250dp</dimen>
