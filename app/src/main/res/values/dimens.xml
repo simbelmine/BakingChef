@@ -22,4 +22,8 @@
     <dimen name="exo_txt_size">14sp</dimen>
     <dimen name="exo_padding">4dp</dimen>
     <dimen name="exo_margin">4dp</dimen>
+
+    <dimen name="card_h_portrait">200dp</dimen>
+    <dimen name="card_h_landscape">220dp</dimen>
+    <dimen name="card_h_w900">250dp</dimen>
 </resources>
