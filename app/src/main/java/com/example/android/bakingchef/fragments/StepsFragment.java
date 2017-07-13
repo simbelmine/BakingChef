@@ -314,7 +314,7 @@ public class StepsFragment extends Fragment implements View.OnClickListener {
             return;
         }
 
-        BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
+        DefaultBandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
         TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory(bandwidthMeter);
         TrackSelector trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
 
@@ -322,7 +322,7 @@ public class StepsFragment extends Fragment implements View.OnClickListener {
         exoPlayerView.setPlayer(exoPlayer);
 
         dataSourceFactory = new DefaultDataSourceFactory(getContext(),
-                Util.getUserAgent(getContext(), getResources().getString(R.string.app_name)), new DefaultBandwidthMeter());
+                Util.getUserAgent(getContext(), getResources().getString(R.string.app_name)), bandwidthMeter);
 
         MediaSource mediaSource = new ExtractorMediaSource(
                 uri,
