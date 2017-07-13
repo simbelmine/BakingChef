@@ -11,6 +11,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SlidingPaneLayout;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +23,7 @@ import android.widget.TextView;
 
 import com.example.android.bakingchef.R;
 import com.example.android.bakingchef.activities.DetailActivity;
+import com.example.android.bakingchef.activities.MainActivity;
 import com.example.android.bakingchef.helpers.PaneUtils;
 import com.example.android.bakingchef.helpers.TextUtils;
 import com.example.android.bakingchef.models.Recipe;
@@ -337,10 +339,15 @@ public class StepsFragment extends Fragment implements View.OnClickListener {
     }
 
     private void exoPlayVideoUrl(int step) {
+        String url = "";
         String videoURL = recipe.getSteps().get(step).getVideoURL();
-        if(!videoURL.isEmpty()) {
+        String thumbnailURL = recipe.getSteps().get(step).getThumbnailURL();
+        if(videoURL != null && !videoURL.isEmpty()) url = videoURL;
+        else if(thumbnailURL != null && !thumbnailURL.isEmpty()) url = thumbnailURL;
+
+        if(url!= null && !url.isEmpty()) {
             setExoPlayerVisibility(true);
-            initializeExoPlayer(Uri.parse(videoURL));
+            initializeExoPlayer(Uri.parse(url));
         }
         else {
             setExoPlayerVisibility(false);
