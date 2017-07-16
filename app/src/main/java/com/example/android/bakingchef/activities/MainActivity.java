@@ -75,8 +75,9 @@ public class MainActivity extends AppCompatActivity implements RecipeOnClickList
     AsyncTask<Void, Void, Void> getData = new AsyncTask<Void, Void, Void>() {
         @Override
         protected Void doInBackground(Void... params) {
+            String json = DataHelper.loadJSONfromAssets(getApplicationContext());
             Type listType = new TypeToken<ArrayList<Recipe>>(){}.getType();
-            recipeList = new GsonBuilder().create().fromJson(DataHelper.loadJSONfromAssets(getApplicationContext()), listType);
+            recipeList = (ArrayList<Recipe>) DataHelper.jsonToCollection(json, listType);
 
             return null;
         }

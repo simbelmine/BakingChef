@@ -34,6 +34,7 @@ public class DetailActivity extends AppCompatActivity {
     public static final String SMALL_APPEARANCE = "SmallTextAppearance";
     public static final String MEDIUM_APPEARANCE = "MediumTextAppearance";
     public static final String LARGE_APPEARANCE = "LargeTextAppearance";
+    public static final String EXTRA_LABEL = "TASK_TEXT";
 
     private SharedPreferences sharedPrefs;
 
