@@ -59,9 +59,6 @@ public class MainActivity extends AppCompatActivity implements RecipeOnClickList
     @Override
     protected void onResume() {
         super.onResume();
-
-        /** Refresh If New Data Added: in our case not very useful **/
-        CollectionAppWidgetProvider.sendRefreshWidgetBroadcast(this);
     }
 
     public int calculateNoOfColumns() {
@@ -98,6 +95,9 @@ public class MainActivity extends AppCompatActivity implements RecipeOnClickList
             if(adapter == null) return;
 
             adapter.setRecipesList(recipeList);
+
+            /** Refresh If New Data Added: in our case not very useful **/
+            CollectionAppWidgetProvider.sendRefreshWidgetBroadcast(getApplicationContext());
         }
     };
 
