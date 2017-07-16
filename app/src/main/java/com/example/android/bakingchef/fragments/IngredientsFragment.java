@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.example.android.bakingchef.R;
 import com.example.android.bakingchef.activities.DetailActivity;
 import com.example.android.bakingchef.activities.MainActivity;
+import com.example.android.bakingchef.helpers.DataHelper;
 import com.example.android.bakingchef.helpers.PaneUtils;
 import com.example.android.bakingchef.helpers.TextUtils;
 import com.example.android.bakingchef.models.Ingredient;
@@ -52,7 +53,7 @@ public class IngredientsFragment extends Fragment implements CompoundButton.OnCh
         if(sharedPrefs != null && sharedPrefs.contains(DetailActivity.CHECKED_INGREDIENTS)) {
             String json = sharedPrefs.getString(DetailActivity.CHECKED_INGREDIENTS, null);
             Type type = new TypeToken<HashSet<String>>() {}.getType();
-            checkedIngredientsSet = (HashSet<String>) jsonToCollection(json, type);
+            checkedIngredientsSet = (HashSet<String>) DataHelper.jsonToCollection(json, type);
         }
     }
 
@@ -78,7 +79,7 @@ public class IngredientsFragment extends Fragment implements CompoundButton.OnCh
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         if(checkedIngredientsSet != null) {
-            String json = collectionToJson(checkedIngredientsSet);
+            String json = DataHelper.collectionToJson(checkedIngredientsSet);
             sharedPrefs.edit().putString(DetailActivity.CHECKED_INGREDIENTS, json).commit();
 
             for(String s: checkedIngredientsSet) {
@@ -155,16 +156,5 @@ public class IngredientsFragment extends Fragment implements CompoundButton.OnCh
                 ((CheckBox) rootView.findViewWithTag(tag)).setChecked(true);
             }
         }
-    }
-
-    private Object jsonToCollection(String json, Type type) {
-        if(json.isEmpty()) return null;
-        Gson gson = new Gson();
-        return gson.fromJson(json, type);
-    }
-
-    private String collectionToJson(Object collection) {
-        Gson gson = new Gson();
-        return gson.toJson(collection);
     }
 }

@@ -9,19 +9,16 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
-
 
 import com.example.android.bakingchef.R;
 import com.example.android.bakingchef.RecipeOnClickListener;
 import com.example.android.bakingchef.adapters.RecipesListAdapter;
+import com.example.android.bakingchef.helpers.DataHelper;
 import com.example.android.bakingchef.models.Recipe;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
@@ -75,29 +72,11 @@ public class MainActivity extends AppCompatActivity implements RecipeOnClickList
         recyclerView.setAdapter(adapter);
     }
 
-    private String loadJSONfromAssets() {
-        String json;
-        try {
-            InputStream io = getAssets().open("baking.json");
-            int size = io.available();
-            byte[] buffer = new byte[size];
-            io.read(buffer);
-            io.close();
-            json = new String(buffer, "UTF-8");
-        }
-        catch (IOException ex) {
-            Log.e(TAG, "MainActivity: " + ex.getMessage());
-            return null;
-        }
-
-        return json;
-    }
-
     AsyncTask<Void, Void, Void> getData = new AsyncTask<Void, Void, Void>() {
         @Override
         protected Void doInBackground(Void... params) {
             Type listType = new TypeToken<ArrayList<Recipe>>(){}.getType();
-            recipeList = new GsonBuilder().create().fromJson(loadJSONfromAssets(), listType);
+            recipeList = new GsonBuilder().create().fromJson(DataHelper.loadJSONfromAssets(getApplicationContext()), listType);
 
             return null;
         }
@@ -114,21 +93,6 @@ public class MainActivity extends AppCompatActivity implements RecipeOnClickList
 
     @Override
     public void onClick(int position) {
-//        if (mTwoPane) {
-//            Bundle arguments = new Bundle();
-//            arguments.putParcelable(DetailFragment.RECIPE, recipeList.get(position));
-//            DetailFragment fragment = new DetailFragment();
-//            fragment.setArguments(arguments);
-//            getSupportFragmentManager().beginTransaction()
-//                    .replace(R.id.item_detail_container, fragment)
-//                    .commit();
-//        } else {
-//            Intent intent = new Intent(this, DetailActivity.class);
-//            intent.putExtra(DetailFragment.RECIPE, recipeList.get(position));
-//
-//            startActivity(intent);
-//        }
-
         Intent intent = new Intent(this, DetailActivity.class);
         intent.putExtra(DetailActivity.RECIPE, recipeList.get(position));
 
