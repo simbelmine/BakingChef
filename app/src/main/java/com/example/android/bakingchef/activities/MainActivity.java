@@ -16,6 +16,7 @@ import com.example.android.bakingchef.RecipeOnClickListener;
 import com.example.android.bakingchef.adapters.RecipesListAdapter;
 import com.example.android.bakingchef.helpers.DataHelper;
 import com.example.android.bakingchef.models.Recipe;
+import com.example.android.bakingchef.widget.CollectionAppWidgetProvider;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
@@ -53,6 +54,14 @@ public class MainActivity extends AppCompatActivity implements RecipeOnClickList
         setupRecyclerView((RecyclerView) recyclerView);
 
         getData.execute();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        /** Refresh If New Data Added: in our case not very useful **/
+        CollectionAppWidgetProvider.sendRefreshWidgetBroadcast(this);
     }
 
     public int calculateNoOfColumns() {

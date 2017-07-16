@@ -3,6 +3,7 @@ package com.example.android.bakingchef.widget;
 
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.widget.RemoteViews;
@@ -21,5 +22,24 @@ public class CollectionAppWidgetProvider extends AppWidgetProvider {
         }
 
         super.onUpdate(context, appWidgetManager, appWidgetIds);
+    }
+
+    public static void sendRefreshWidgetBroadcast(Context context) {
+        Intent refreshIntent = new Intent(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+        refreshIntent.setComponent(new ComponentName(context, CollectionAppWidgetProvider.class));
+        context.sendBroadcast(refreshIntent);
+    }
+
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        String action = intent.getAction();
+        if(AppWidgetManager.ACTION_APPWIDGET_UPDATE.equals(action)) {
+            AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+            ComponentName componentName = new ComponentName(context, CollectionAppWidgetProvider.class);
+
+            appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetManager.getAppWidgetIds(componentName),R.id.widget_stack_view);
+        }
+
+        super.onReceive(context, intent);
     }
 }
