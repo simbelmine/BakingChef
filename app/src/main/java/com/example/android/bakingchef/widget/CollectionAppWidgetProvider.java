@@ -1,23 +1,29 @@
 package com.example.android.bakingchef.widget;
 
 
+import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.TaskStackBuilder;
 import android.widget.RemoteViews;
 
 import com.example.android.bakingchef.R;
+import com.example.android.bakingchef.activities.DetailActivity;
+import com.example.android.bakingchef.activities.MainActivity;
 
 public class CollectionAppWidgetProvider extends AppWidgetProvider {
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         for(int appWidgetId : appWidgetIds) {
             RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.collection_widget_layout);
-            Intent serviceIntent = new Intent(context, WidgetRemoteViewsService.class);
 
-            remoteViews.setRemoteAdapter(R.id.widget_stack_view, serviceIntent);
+            setRemoteAdapter(context, remoteViews);
+            setOnClickItemEventHandler(context, remoteViews);
+            addOnClickItemTemplate(context, remoteViews);
+
             appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
         }
 
@@ -41,5 +47,24 @@ public class CollectionAppWidgetProvider extends AppWidgetProvider {
         }
 
         super.onReceive(context, intent);
+    }
+
+    private void setRemoteAdapter(Context context, RemoteViews remoteViews) {
+        Intent serviceIntent = new Intent(context, WidgetRemoteViewsService.class);
+        remoteViews.setRemoteAdapter(R.id.widget_stack_view, serviceIntent);
+    }
+
+    private void setOnClickItemEventHandler(Context context, RemoteViews remoteViews) {
+        Intent clickIntent = new Intent(context, MainActivity.class);
+        PendingIntent clickPendingIntent = PendingIntent.getActivity(context, 0, clickIntent, 0);
+        remoteViews.setOnClickPendingIntent(R.id.widget_item_container, clickPendingIntent);
+    }
+
+    private void addOnClickItemTemplate(Context context, RemoteViews remoteViews) {
+        Intent clickIntentTemplate = new Intent(context, DetailActivity.class);
+        PendingIntent clickPendingIntentTemplate = TaskStackBuilder.create(context)
+                .addNextIntentWithParentStack(clickIntentTemplate)
+                .getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+        remoteViews.setPendingIntentTemplate(R.id.widget_stack_view, clickPendingIntentTemplate);
     }
 }

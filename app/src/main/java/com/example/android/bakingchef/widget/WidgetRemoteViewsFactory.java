@@ -50,8 +50,8 @@ public class WidgetRemoteViewsFactory implements RemoteViewsService.RemoteViewsF
         rv.setTextViewText(R.id.widget_item_name, recipe.getName());
 
         Intent fillInIntent = new Intent();
-        fillInIntent.putExtra(DetailActivity.EXTRA_LABEL, recipe.getName());
-        rv.setOnClickFillInIntent(R.id.widgetItemContainer, fillInIntent);
+        fillInIntent.putExtra(DetailActivity.WIDGET_RECIPE, recipe);
+        rv.setOnClickFillInIntent(R.id.widget_item_container, fillInIntent);
 
         return rv;
     }

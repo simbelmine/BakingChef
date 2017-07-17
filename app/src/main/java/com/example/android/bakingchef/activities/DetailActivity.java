@@ -4,9 +4,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.NavUtils;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.example.android.bakingchef.fragments.DetailFragment;
@@ -14,6 +16,7 @@ import com.example.android.bakingchef.fragments.IngredientsFragment;
 import com.example.android.bakingchef.R;
 import com.example.android.bakingchef.fragments.StepsFragment;
 import com.example.android.bakingchef.helpers.PaneUtils;
+import com.example.android.bakingchef.models.Recipe;
 
 /**
  * An activity representing a single Item detail screen. This
@@ -23,6 +26,7 @@ import com.example.android.bakingchef.helpers.PaneUtils;
  */
 public class DetailActivity extends AppCompatActivity {
     public static final String RECIPE = "recipe_list";
+    public static final String WIDGET_RECIPE = "WidgetRecipe";
     public static final String CURRENT_STEP = "current_step";
     public static final String CHECKED_INGREDIENTS = "CheckedIngredients";
     public static final String DETAILS_PREFS = "DetailsPrefs";
@@ -34,7 +38,6 @@ public class DetailActivity extends AppCompatActivity {
     public static final String SMALL_APPEARANCE = "SmallTextAppearance";
     public static final String MEDIUM_APPEARANCE = "MediumTextAppearance";
     public static final String LARGE_APPEARANCE = "LargeTextAppearance";
-    public static final String EXTRA_LABEL = "TASK_TEXT";
 
     private SharedPreferences sharedPrefs;
 
@@ -56,32 +59,9 @@ public class DetailActivity extends AppCompatActivity {
         // http://developer.android.com/guide/components/fragments.html
         //
 
+
         if (savedInstanceState == null) {
-            // Create the detail fragment and add it to the activity
-            // using a fragment transaction.
-            Bundle arguments = new Bundle();
-            arguments.putParcelable(RECIPE, getIntent().getParcelableExtra(RECIPE));
-
-            DetailFragment fragment = new DetailFragment();
-            fragment.setArguments(arguments);
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.details_container_layout, fragment)
-                    .commit();
-
-
-            if(PaneUtils.isTwoPane(this) && PaneUtils.isTablet(this) || getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                IngredientsFragment ingredientsFragment = new IngredientsFragment();
-                ingredientsFragment.setArguments(arguments);
-                getSupportFragmentManager().beginTransaction()
-                        .add(R.id.ingredients_container, ingredientsFragment)
-                        .commit();
-
-                StepsFragment stepsFragment = new StepsFragment();
-                stepsFragment.setArguments(arguments);
-                getSupportFragmentManager().beginTransaction()
-                        .add(R.id.steps_container, stepsFragment)
-                        .commit();
-            }
+            setFragments(true);
         }
     }
 
@@ -90,28 +70,7 @@ public class DetailActivity extends AppCompatActivity {
         super.onConfigurationChanged(newConfig);
         setContentView(R.layout.activity_detail);
 
-        Bundle arguments = new Bundle();
-        arguments.putParcelable(RECIPE, getIntent().getParcelableExtra(RECIPE));
-
-        DetailFragment fragment = new DetailFragment();
-        fragment.setArguments(arguments);
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.details_container_layout, fragment, DETAILS_FRAGMENT)
-                .commit();
-
-        if(PaneUtils.isTwoPane(this) && PaneUtils.isTablet(this) || getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            IngredientsFragment ingredientsFragment = new IngredientsFragment();
-            ingredientsFragment.setArguments(arguments);
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.ingredients_container, ingredientsFragment, INGREDIENTS_FRAGMENT)
-                    .commit();
-
-            StepsFragment stepsFragment = new StepsFragment();
-            stepsFragment.setArguments(arguments);
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.steps_container, stepsFragment, STEPS_FRAGMENT)
-                    .commit();
-        }
+        setFragments(false);
     }
 
     @Override
@@ -148,5 +107,63 @@ public class DetailActivity extends AppCompatActivity {
     private void clearSharedPreferences() {
         sharedPrefs.edit().remove(CURRENT_STEP).commit();
         sharedPrefs.edit().remove(CHECKED_INGREDIENTS).commit();
+    }
+
+    private Recipe getRecipe() {
+        Recipe recipeWidget = getIntent().getParcelableExtra(WIDGET_RECIPE);
+        Recipe recipeMainActivity = getIntent().getParcelableExtra(RECIPE);
+
+        if(recipeMainActivity != null) return recipeMainActivity;
+        if(recipeWidget != null) return recipeWidget;
+
+        return null;
+    }
+
+    private void setFragments(boolean isFirstTime) {
+        Recipe recipe = getRecipe();
+        Bundle arguments = new Bundle();
+        arguments.putParcelable(RECIPE, recipe);
+
+        DetailFragment fragment = new DetailFragment();
+        fragment.setArguments(arguments);
+        if(isFirstTime) {
+            addFragment(fragment, R.id.details_container_layout);
+        }
+        else {
+            replaceFragment(fragment, R.id.details_container_layout);
+        }
+
+
+        if(PaneUtils.isTwoPane(this) && PaneUtils.isTablet(this) || getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            IngredientsFragment ingredientsFragment = new IngredientsFragment();
+            ingredientsFragment.setArguments(arguments);
+            if(isFirstTime) {
+                addFragment(ingredientsFragment, R.id.ingredients_container);
+            }
+            else {
+                replaceFragment(ingredientsFragment, R.id.ingredients_container);
+            }
+
+            StepsFragment stepsFragment = new StepsFragment();
+            stepsFragment.setArguments(arguments);
+            if(isFirstTime) {
+                addFragment(stepsFragment, R.id.steps_container);
+            }
+            else {
+                replaceFragment(stepsFragment, R.id.steps_container);
+            }
+        }
+    }
+
+    private void addFragment(Fragment fragment, int containerId) {
+        getSupportFragmentManager().beginTransaction()
+                .add(containerId, fragment)
+                .commit();
+    }
+
+    private void replaceFragment(Fragment fragment, int containerId) {
+        getSupportFragmentManager().beginTransaction()
+                .replace(containerId, fragment, DETAILS_FRAGMENT)
+                .commit();
     }
 }

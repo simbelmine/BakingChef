@@ -106,10 +106,9 @@ public class StepsFragment extends Fragment implements View.OnClickListener {
                 showStepDetails(stepsLayout, step);
             }
 
+            exoPlayerView = (SimpleExoPlayerView) getActivity().findViewById(R.id.player_view);
+            exoPlayVideoUrl(step);
         }
-
-        exoPlayerView = (SimpleExoPlayerView) getActivity().findViewById(R.id.player_view);
-        exoPlayVideoUrl(step);
 
         slidingPaneLayout = (SlidingPaneLayout) getActivity().findViewById(R.id.sliding_pane_layout);
         boolean isPaneWasOpened = sharedPrefs.getBoolean(DetailActivity.IS_PANE_OPENED, false);

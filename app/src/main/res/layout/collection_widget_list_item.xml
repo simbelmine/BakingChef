@@ -6,7 +6,7 @@
     android:layout_height="150dp"
     android:minHeight="@dimen/widget_listview_item_height"
     android:weightSum="2"
-    android:id="@+id/widgetItemContainer"
+    android:id="@+id/widget_item_container"
     android:background="@color/colorPrimary">
     <ImageView
         android:id="@+id/widget_item_img"
