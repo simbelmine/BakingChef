@@ -2,6 +2,7 @@ package com.example.android.bakingchef;
 
 
 import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
@@ -29,14 +30,22 @@ public class MainActivityOrientationTest {
 
     @Test
     public void recyclerViewOnOrientationChanged() {
-        onView(withId(R.id.item_list))
-                .check(matches(not(atPosition(POSITION, hasDescendant(withText(RECIPE_NAME))))));
-        rotateDevice();
-        onView(withId(R.id.item_list))
-                .check(matches(atPosition(POSITION, hasDescendant(withText(RECIPE_NAME)))));
+        if(!isTablet()) {
+            onView(withId(R.id.item_list))
+                    .check(matches(not(atPosition(POSITION, hasDescendant(withText(RECIPE_NAME))))));
+            rotateDevice();
+            onView(withId(R.id.item_list))
+                    .check(matches(atPosition(POSITION, hasDescendant(withText(RECIPE_NAME)))));
+        }
     }
 
     private void rotateDevice() {
         testRule.getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+    }
+
+    private boolean isTablet() {
+        return (testRule.getActivity().getResources().getConfiguration().screenLayout
+                & Configuration.SCREENLAYOUT_SIZE_MASK)
+                >= Configuration.SCREENLAYOUT_SIZE_LARGE;
     }
 }
