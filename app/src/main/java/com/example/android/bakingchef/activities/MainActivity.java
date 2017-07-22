@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity implements RecipeOnClickList
 
             adapter.setRecipesList(recipeList);
 
-            /** Refresh If New Data Added: in our case not very useful **/
+            /** Refresh If New Data Added: not used in current case **/
             CollectionAppWidgetProvider.sendRefreshWidgetBroadcast(getApplicationContext());
         }
     };
