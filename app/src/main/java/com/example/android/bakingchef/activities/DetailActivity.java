@@ -40,6 +40,7 @@ public class DetailActivity extends AppCompatActivity {
     public static final String LARGE_APPEARANCE = "LargeTextAppearance";
 
     private SharedPreferences sharedPrefs;
+    Recipe recipe;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +60,7 @@ public class DetailActivity extends AppCompatActivity {
         // http://developer.android.com/guide/components/fragments.html
         //
 
+        recipe = getRecipe();
 
         if (savedInstanceState == null) {
             setFragments(true);
@@ -110,17 +112,17 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     private Recipe getRecipe() {
-        Recipe recipeWidget = getIntent().getParcelableExtra(WIDGET_RECIPE);
-        Recipe recipeMainActivity = getIntent().getParcelableExtra(RECIPE);
+        Bundle bundle = getIntent().getExtras();
+        Recipe recipe = bundle.getParcelable(RECIPE);
+        Recipe recipeWidget = bundle.getParcelable(WIDGET_RECIPE);
 
-        if(recipeMainActivity != null) return recipeMainActivity;
-        if(recipeWidget != null) return recipeWidget;
+        if(recipe != null) return recipe;
+        else if(recipeWidget != null) return recipeWidget;
 
         return null;
     }
 
     private void setFragments(boolean isFirstTime) {
-        Recipe recipe = getRecipe();
         Bundle arguments = new Bundle();
         arguments.putParcelable(RECIPE, recipe);
 

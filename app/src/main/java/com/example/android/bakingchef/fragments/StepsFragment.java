@@ -49,7 +49,7 @@ public class StepsFragment extends Fragment implements View.OnClickListener {
     private int step;
     private Button nextStepBtn;
     private Button prevStepBtn;
-    private  ViewPager viewPager;
+    private ViewPager viewPager;
     private SharedPreferences sharedPrefs;
 
     private static SimpleExoPlayer exoPlayer;

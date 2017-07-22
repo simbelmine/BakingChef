@@ -26,7 +26,7 @@ public class Recipe implements Parcelable {
     @SerializedName("image")
     private String image;
 
-    static final Parcelable.Creator<Recipe> CREATOR = new Parcelable.Creator<Recipe>() {
+    public static final Parcelable.Creator<Recipe> CREATOR = new Parcelable.Creator<Recipe>() {
         @Override
         public Recipe createFromParcel(Parcel in) {
             return new Recipe(in);

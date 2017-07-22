@@ -14,7 +14,7 @@ public class Ingredient implements Parcelable {
     private String ingredient;
 
 
-    static final Parcelable.Creator<Ingredient> CREATOR = new Parcelable.Creator<Ingredient>() {
+    public static final Parcelable.Creator<Ingredient> CREATOR = new Parcelable.Creator<Ingredient>() {
         @Override
         public Ingredient createFromParcel(Parcel in) {
             return new Ingredient(in);
