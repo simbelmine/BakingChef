@@ -21,7 +21,7 @@ import static com.example.android.bakingchef.TestUtils.atPosition;
 import static org.hamcrest.Matchers.not;
 
 @RunWith(AndroidJUnit4.class)
-public class MainActivityOrientationTest {
+public class MainActivityPhoneOrientationTest {
     public static final int POSITION = 3;
     public static final String RECIPE_NAME = "Cheesecake";
 
