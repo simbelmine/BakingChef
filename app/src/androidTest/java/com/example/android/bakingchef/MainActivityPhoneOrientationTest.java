@@ -18,6 +18,8 @@ import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.example.android.bakingchef.TestUtils.atPosition;
+import static com.example.android.bakingchef.TestUtils.rotateDevice;
+import static com.example.android.bakingchef.helpers.PaneUtils.isTablet;
 import static org.hamcrest.Matchers.not;
 
 @RunWith(AndroidJUnit4.class)
@@ -30,22 +32,12 @@ public class MainActivityPhoneOrientationTest {
 
     @Test
     public void recyclerViewOnOrientationChanged() {
-        if(!isTablet()) {
+        if(!isTablet(testRule.getActivity())) {
             onView(withId(R.id.item_list))
                     .check(matches(not(atPosition(POSITION, hasDescendant(withText(RECIPE_NAME))))));
-            rotateDevice();
+            rotateDevice(testRule.getActivity());
             onView(withId(R.id.item_list))
                     .check(matches(atPosition(POSITION, hasDescendant(withText(RECIPE_NAME)))));
         }
-    }
-
-    private void rotateDevice() {
-        testRule.getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-    }
-
-    private boolean isTablet() {
-        return (testRule.getActivity().getResources().getConfiguration().screenLayout
-                & Configuration.SCREENLAYOUT_SIZE_MASK)
-                >= Configuration.SCREENLAYOUT_SIZE_LARGE;
     }
 }
