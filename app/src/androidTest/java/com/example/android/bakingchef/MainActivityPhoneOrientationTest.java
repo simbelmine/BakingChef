@@ -35,7 +35,7 @@ public class MainActivityPhoneOrientationTest {
         if(!isTablet(testRule.getActivity())) {
             onView(withId(R.id.item_list))
                     .check(matches(not(atPosition(POSITION, hasDescendant(withText(RECIPE_NAME))))));
-            rotateDevice(testRule.getActivity());
+            rotateDevice(testRule.getActivity(), ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
             onView(withId(R.id.item_list))
                     .check(matches(atPosition(POSITION, hasDescendant(withText(RECIPE_NAME)))));
         }

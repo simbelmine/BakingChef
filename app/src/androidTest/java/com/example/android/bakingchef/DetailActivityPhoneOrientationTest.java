@@ -1,6 +1,7 @@
 package com.example.android.bakingchef;
 
 
+import android.content.pm.ActivityInfo;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
@@ -27,7 +28,7 @@ public class DetailActivityPhoneOrientationTest {
         onView(withId(R.id.tabs))
                 .check(matches(isDisplayed()));
 
-        rotateDevice(testRule.getActivity());
+        rotateDevice(testRule.getActivity(), ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
         onView(withId(R.id.tabs))
                 .check(doesNotExist());

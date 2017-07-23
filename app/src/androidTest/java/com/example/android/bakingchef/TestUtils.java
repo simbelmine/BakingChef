@@ -40,8 +40,8 @@ public class TestUtils {
         };
     }
 
-    public static void rotateDevice(Activity activity) {
-        activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+    public static void rotateDevice(Activity activity, int orientation) {
+        activity.setRequestedOrientation(orientation);
     }
 
     public boolean isTablet(Activity activity) {
