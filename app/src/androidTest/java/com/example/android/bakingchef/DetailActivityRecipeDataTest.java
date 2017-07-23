@@ -26,9 +26,7 @@ public class DetailActivityRecipeDataTest {
     @Test
     public void checkDetailActivityPassedData() {
         onView(withId(R.id.item_list))
-                .perform(
-                        RecyclerViewActions.actionOnItemAtPosition(0, click())
-                );
+                .perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
 
         intended(allOf(
                 hasExtraWithKey(DetailActivity.RECIPE)
