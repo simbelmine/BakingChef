@@ -46,6 +46,8 @@ public class DetailActivityCheckTest {
                 .check(matches(isDisplayed()));
 
         onView(withTagValue(is((Object) INGREDIENT_TAG)))
-                .check(matches(not(isChecked())));
+                .check(matches(not(isChecked())))
+                .perform(click())
+                .check(matches(isChecked()));
     }
 }
