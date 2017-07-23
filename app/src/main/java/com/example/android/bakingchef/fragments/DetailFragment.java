@@ -76,8 +76,8 @@ public class DetailFragment extends Fragment {
     private void setupViewPager() {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getActivity().getSupportFragmentManager());
         adapter.setRecipe(recipe);
-        adapter.addFragment(new IngredientsFragment(), "Ingredients");
-        adapter.addFragment(new StepsFragment(), "Steps");
+        adapter.addFragment(new IngredientsFragment(), getResources().getString(R.string.fragment_ingredients_name));
+        adapter.addFragment(new StepsFragment(), getResources().getString(R.string.fragment_steps_name));
         viewPager.setAdapter(adapter);
     }
 
