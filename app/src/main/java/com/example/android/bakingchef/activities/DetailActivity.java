@@ -113,11 +113,13 @@ public class DetailActivity extends AppCompatActivity {
 
     private Recipe getRecipe() {
         Bundle bundle = getIntent().getExtras();
-        Recipe recipe = bundle.getParcelable(RECIPE);
-        Recipe recipeWidget = bundle.getParcelable(WIDGET_RECIPE);
+        if(bundle != null) {
+            Recipe recipe = bundle.getParcelable(RECIPE);
+            Recipe recipeWidget = bundle.getParcelable(WIDGET_RECIPE);
 
-        if(recipe != null) return recipe;
-        else if(recipeWidget != null) return recipeWidget;
+            if (recipe != null) return recipe;
+            else if (recipeWidget != null) return recipeWidget;
+        }
 
         return null;
     }
