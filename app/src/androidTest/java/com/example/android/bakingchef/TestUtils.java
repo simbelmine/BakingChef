@@ -44,7 +44,7 @@ public class TestUtils {
         activity.setRequestedOrientation(orientation);
     }
 
-    public boolean isTablet(Activity activity) {
+    public static boolean isTablet(Activity activity) {
         return (activity.getResources().getConfiguration().screenLayout
                 & Configuration.SCREENLAYOUT_SIZE_MASK)
                 >= Configuration.SCREENLAYOUT_SIZE_LARGE;

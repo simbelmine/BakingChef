@@ -18,8 +18,8 @@ import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.example.android.bakingchef.TestUtils.atPosition;
+import static com.example.android.bakingchef.TestUtils.isTablet;
 import static com.example.android.bakingchef.TestUtils.rotateDevice;
-import static com.example.android.bakingchef.helpers.PaneUtils.isTablet;
 import static org.hamcrest.Matchers.not;
 
 @RunWith(AndroidJUnit4.class)
