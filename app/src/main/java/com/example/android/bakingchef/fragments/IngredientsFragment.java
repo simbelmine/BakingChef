@@ -21,7 +21,7 @@ import com.example.android.bakingchef.activities.DetailActivity;
 import com.example.android.bakingchef.activities.MainActivity;
 import com.example.android.bakingchef.helpers.DataHelper;
 import com.example.android.bakingchef.helpers.PaneUtils;
-import com.example.android.bakingchef.helpers.TextUtils;
+import com.example.android.bakingchef.helpers.MyTextUtils;
 import com.example.android.bakingchef.models.Ingredient;
 import com.example.android.bakingchef.models.Recipe;
 import com.google.gson.reflect.TypeToken;
@@ -101,7 +101,7 @@ public class IngredientsFragment extends Fragment implements CompoundButton.OnCh
         TextView servingsView = new TextView(getContext());
         int servings = recipe.getServings();
         servingsView.setText(getResources().getString(R.string.servings_ingredients) + " " + String.valueOf(servings));
-        TextUtils.setTextStyle(getContext(), servingsView, DetailActivity.LARGE_APPEARANCE);
+        MyTextUtils.setTextStyle(getContext(), servingsView, DetailActivity.LARGE_APPEARANCE);
         layout.addView(servingsView);
     }
 
@@ -126,7 +126,7 @@ public class IngredientsFragment extends Fragment implements CompoundButton.OnCh
 
             String ingredientStr = buildIngredientText(ingredient);
             textView.setText(ingredientStr);
-            TextUtils.setTextStyle(getContext(), textView, DetailActivity.MEDIUM_APPEARANCE);
+            MyTextUtils.setTextStyle(getContext(), textView, DetailActivity.MEDIUM_APPEARANCE);
 
             singleLayout.addView(checkBox);
             singleLayout.addView(textView);

@@ -11,7 +11,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SlidingPaneLayout;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,9 +22,8 @@ import android.widget.TextView;
 
 import com.example.android.bakingchef.R;
 import com.example.android.bakingchef.activities.DetailActivity;
-import com.example.android.bakingchef.activities.MainActivity;
 import com.example.android.bakingchef.helpers.PaneUtils;
-import com.example.android.bakingchef.helpers.TextUtils;
+import com.example.android.bakingchef.helpers.MyTextUtils;
 import com.example.android.bakingchef.models.Recipe;
 import com.example.android.bakingchef.models.Step;
 import com.google.android.exoplayer2.ExoPlayerFactory;
@@ -183,18 +181,18 @@ public class StepsFragment extends Fragment implements View.OnClickListener {
             return;
         Step step = steps.get(stepIdx);
         String sDesc = step.getShortDescription();
-        String lDesc = TextUtils.getTextFromHTML(step.getDescription());
+        String lDesc = MyTextUtils.getTextFromHTML(step.getDescription());
 
-        TextUtils.setTextStyle(getContext(), sDescView, DetailActivity.LARGE_APPEARANCE);
+        MyTextUtils.setTextStyle(getContext(), sDescView, DetailActivity.LARGE_APPEARANCE);
         sDescView.setText(sDesc);
 
         if(!PaneUtils.isTablet(getActivity()) && PaneUtils.isLandscape(getActivity())) {
-            TextUtils.setTextStyle(getContext(), lDescView, DetailActivity.SMALL_APPEARANCE);
+            MyTextUtils.setTextStyle(getContext(), lDescView, DetailActivity.SMALL_APPEARANCE);
             int padding = (int)getResources().getDimension(R.dimen.description_video_padding);
             lDescView.setPadding(padding,padding,padding, padding);
         }
         else {
-            TextUtils.setTextStyle(getContext(), lDescView, DetailActivity.MEDIUM_APPEARANCE);
+            MyTextUtils.setTextStyle(getContext(), lDescView, DetailActivity.MEDIUM_APPEARANCE);
         }
         lDescView.setText(lDesc);
 
@@ -235,11 +233,11 @@ public class StepsFragment extends Fragment implements View.OnClickListener {
 
         TextView shortDescriptionView = new TextView(getContext());
         shortDescriptionView.setText(shortDescription);
-        TextUtils.setTextStyle(getContext(), shortDescriptionView, DetailActivity.LARGE_APPEARANCE);
+        MyTextUtils.setTextStyle(getContext(), shortDescriptionView, DetailActivity.LARGE_APPEARANCE);
 
         TextView descriptionView = new TextView(getContext());
         descriptionView.setText(description);
-        TextUtils.setTextStyle(getContext(), descriptionView, DetailActivity.MEDIUM_APPEARANCE);
+        MyTextUtils.setTextStyle(getContext(), descriptionView, DetailActivity.MEDIUM_APPEARANCE);
 
         stepsLayout.addView(shortDescriptionView);
         stepsLayout.addView(descriptionView);

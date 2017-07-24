@@ -8,7 +8,7 @@ import android.widget.TextView;
 import com.example.android.bakingchef.activities.DetailActivity;
 import com.example.android.bakingchef.R;
 
-public class TextUtils {
+public class MyTextUtils {
     public static void setTextStyle(Context context, TextView textView, String appearance) {
         setTextAppearance(context, textView, appearance);
         textView.setPadding(0, 0, 0, (int)context.getResources().getDimension(R.dimen.standard_padding));
