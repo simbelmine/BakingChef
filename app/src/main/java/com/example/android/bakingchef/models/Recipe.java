@@ -8,10 +8,6 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Sve on 7/6/17.
- */
-
 public class Recipe implements Parcelable {
     @SerializedName("id")
     private int id;

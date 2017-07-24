@@ -5,10 +5,6 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
-/**
- * Created by Sve on 7/6/17.
- */
-
 public class Step implements Parcelable {
     @SerializedName("id")
     private int stepId;
