@@ -9,16 +9,25 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.example.android.bakingchef.AppController;
 import com.example.android.bakingchef.R;
 import com.example.android.bakingchef.RecipeOnClickListener;
 import com.example.android.bakingchef.adapters.RecipesListAdapter;
 import com.example.android.bakingchef.helpers.DataHelper;
 import com.example.android.bakingchef.models.Recipe;
 import com.example.android.bakingchef.widget.CollectionAppWidgetProvider;
-import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -32,6 +41,7 @@ import java.util.ArrayList;
  * item details side-by-side using two vertical panes.
  */
 public class MainActivity extends AppCompatActivity implements RecipeOnClickListener {
+    private static final String URL = "https://d17h27t6h515a5.cloudfront.net/topher/2017/May/59121517_baking/baking.json";
     public static final String TAG = "chef";
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
@@ -52,8 +62,8 @@ public class MainActivity extends AppCompatActivity implements RecipeOnClickList
         View recyclerView = findViewById(R.id.item_list);
         assert recyclerView != null;
         setupRecyclerView((RecyclerView) recyclerView);
-
-        getData.execute();
+        
+        makeJsonRequest();
     }
 
     @Override
@@ -78,19 +88,31 @@ public class MainActivity extends AppCompatActivity implements RecipeOnClickList
         recyclerView.setAdapter(adapter);
     }
 
-    AsyncTask<Void, Void, Void> getData = new AsyncTask<Void, Void, Void>() {
+    @Override
+    public void onClick(int position) {
+        Intent intent = new Intent(this, DetailActivity.class);
+        intent.putExtra(DetailActivity.RECIPE, recipeList.get(position));
+
+        startActivity(intent);
+    }
+
+    public void makeJsonRequest() {
+        JsonArrayRequest jsonObjectRequest = new JsonArrayRequest(
+                URL,
+                responseListener,
+                responseErrorListener
+        );
+
+        AppController.getInstance().addToRequestQueue(jsonObjectRequest);
+    }
+
+    private Response.Listener<JSONArray> responseListener = new Response.Listener<JSONArray>() {
         @Override
-        protected Void doInBackground(Void... params) {
-            String json = DataHelper.loadJSONfromAssets(getApplicationContext());
+        public void onResponse(JSONArray response) {
+            String json = response.toString();
             Type listType = new TypeToken<ArrayList<Recipe>>(){}.getType();
             recipeList = (ArrayList<Recipe>) DataHelper.jsonToCollection(json, listType);
 
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
             if(recipeList == null) return;
             if(adapter == null) return;
 
@@ -101,11 +123,10 @@ public class MainActivity extends AppCompatActivity implements RecipeOnClickList
         }
     };
 
-    @Override
-    public void onClick(int position) {
-        Intent intent = new Intent(this, DetailActivity.class);
-        intent.putExtra(DetailActivity.RECIPE, recipeList.get(position));
-
-        startActivity(intent);
-    }
+    private Response.ErrorListener responseErrorListener = new Response.ErrorListener() {
+        @Override
+        public void onErrorResponse(VolleyError error) {
+            Log.e(TAG, "Volley Response Error: " + error);
+        }
+    };
 }
