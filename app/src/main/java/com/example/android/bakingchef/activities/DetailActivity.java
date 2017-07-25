@@ -93,8 +93,14 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
+    protected void onPause() {
+        super.onPause();
+        StepsFragment.pausePlayer();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
         clearSharedPreferences();
         StepsFragment.releasePlayer();
     }

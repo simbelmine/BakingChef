@@ -163,7 +163,7 @@ public class StepsFragment extends Fragment implements View.OnClickListener {
             if (exoPlayer.getPlaybackState() != PlaybackState.STATE_PLAYING) {
                 exoPlayer.seekTo(0);
             }
-            exoPlayer.setPlayWhenReady(false);
+            pausePlayer();
         }
     }
 
@@ -367,6 +367,12 @@ public class StepsFragment extends Fragment implements View.OnClickListener {
             exoPlayer.release();
             exoPlayer = null;
         }
+    }
+
+    public static void pausePlayer() {
+        /** Pause the Player when orientation happend **/
+        if(exoPlayer != null)
+            exoPlayer.setPlayWhenReady(false);
     }
 
     private void setUpSlidingPane() {
