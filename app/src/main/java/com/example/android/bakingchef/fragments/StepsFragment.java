@@ -108,11 +108,9 @@ public class StepsFragment extends Fragment implements View.OnClickListener {
             exoPlayVideoUrl(step);
         }
 
-        slidingPaneLayout = (SlidingPaneLayout) getActivity().findViewById(R.id.sliding_pane_layout);
-        boolean isPaneWasOpened = sharedPrefs.getBoolean(DetailActivity.IS_PANE_OPENED, false);
-        if(PaneUtils.isLandscape(getActivity()) && !isPaneWasOpened) {
-            slidingPaneLayout.openPane();
-            new Handler().postDelayed(openDrawerRunnable(), DetailActivity.PANE_DELAY);
+
+        if(!PaneUtils.isTablet(getActivity())) {
+            setUpSlidingPane();
         }
 
         return rootView;
@@ -368,6 +366,15 @@ public class StepsFragment extends Fragment implements View.OnClickListener {
             exoPlayer.stop();
             exoPlayer.release();
             exoPlayer = null;
+        }
+    }
+
+    private void setUpSlidingPane() {
+        slidingPaneLayout = (SlidingPaneLayout) getActivity().findViewById(R.id.sliding_pane_layout);
+        boolean isPaneWasOpened = sharedPrefs.getBoolean(DetailActivity.IS_PANE_OPENED, false);
+        if(PaneUtils.isLandscape(getActivity()) && !isPaneWasOpened) {
+            slidingPaneLayout.openPane();
+            new Handler().postDelayed(openDrawerRunnable(), DetailActivity.PANE_DELAY);
         }
     }
 
