@@ -11,6 +11,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SlidingPaneLayout;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -336,10 +337,10 @@ public class StepsFragment extends Fragment implements View.OnClickListener {
         String url = "";
         String videoURL = recipe.getSteps().get(step).getVideoURL();
         String thumbnailURL = recipe.getSteps().get(step).getThumbnailURL();
-        if(videoURL != null && !videoURL.isEmpty()) url = videoURL;
+        if(!TextUtils.isEmpty(videoURL)) url = videoURL;
         else if(thumbnailURL != null && !thumbnailURL.isEmpty()) url = thumbnailURL;
 
-        if(url!= null && !url.isEmpty()) {
+        if(!TextUtils.isEmpty(url)) {
             setExoPlayerVisibility(true);
             initializeExoPlayer(Uri.parse(url));
         }

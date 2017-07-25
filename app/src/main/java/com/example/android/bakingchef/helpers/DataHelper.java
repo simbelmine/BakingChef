@@ -1,6 +1,7 @@
 package com.example.android.bakingchef.helpers;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.example.android.bakingchef.activities.MainActivity;
@@ -12,7 +13,7 @@ import java.lang.reflect.Type;
 
 public class DataHelper {
     public static Object jsonToCollection(String json, Type type) {
-        if(json.isEmpty()) return null;
+        if(TextUtils.isEmpty(json)) return null;
         Gson gson = new Gson();
         return gson.fromJson(json, type);
     }
