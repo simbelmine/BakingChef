@@ -2,16 +2,24 @@ package com.example.android.bakingchef.widget;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.text.TextUtils;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
 import com.example.android.bakingchef.R;
 import com.example.android.bakingchef.activities.DetailActivity;
 import com.example.android.bakingchef.helpers.DataHelper;
+import com.example.android.bakingchef.models.Ingredient;
 import com.example.android.bakingchef.models.Recipe;
 import com.google.gson.reflect.TypeToken;
+import com.squareup.picasso.Picasso;
 
+import java.io.IOException;
 import java.lang.reflect.Type;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 
 
@@ -45,9 +53,11 @@ public class WidgetRemoteViewsFactory implements RemoteViewsService.RemoteViewsF
             return null;
 
         Recipe recipe = recipeList.get(position);
-
         RemoteViews rv = new RemoteViews(context.getPackageName(), R.layout.collection_widget_list_item);
+
+
         rv.setTextViewText(R.id.widget_item_name, recipe.getName());
+        loadImage(rv, recipe.getImage());
 
         Intent fillInIntent = new Intent();
         fillInIntent.putExtra(DetailActivity.WIDGET_RECIPE, recipe);
@@ -80,5 +90,21 @@ public class WidgetRemoteViewsFactory implements RemoteViewsService.RemoteViewsF
     @Override
     public void onDestroy() {
 
+    }
+
+    private void loadImage(RemoteViews rv, String url) {
+        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.baking);
+        if(!TextUtils.isEmpty(url)) {
+            try {
+                bitmap = Picasso.with(context).load(url).get();
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            }
+            rv.setImageViewBitmap(R.id.widget_item_img, bitmap);
+        }
+        else {
+            rv.setImageViewResource(R.id.widget_item_img, R.drawable.baking);
+        }
     }
 }

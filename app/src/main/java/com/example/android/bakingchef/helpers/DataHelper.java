@@ -4,8 +4,13 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.android.volley.Response;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.example.android.bakingchef.AppController;
 import com.example.android.bakingchef.activities.MainActivity;
 import com.google.gson.Gson;
+
+import org.json.JSONArray;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -39,5 +44,15 @@ public class DataHelper {
         }
 
         return json;
+    }
+
+    public static void makeJsonRequest(String url, Response.Listener<JSONArray> responseListener, Response.ErrorListener responseErrorListener) {
+        JsonArrayRequest jsonObjectRequest = new JsonArrayRequest(
+                url,
+                responseListener,
+                responseErrorListener
+        );
+
+        AppController.getInstance().addToRequestQueue(jsonObjectRequest);
     }
 }

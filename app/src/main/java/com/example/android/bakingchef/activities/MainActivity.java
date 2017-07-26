@@ -30,6 +30,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.lang.reflect.Type;
+import java.net.URL;
 import java.util.ArrayList;
 
 /**
@@ -41,7 +42,7 @@ import java.util.ArrayList;
  * item details side-by-side using two vertical panes.
  */
 public class MainActivity extends AppCompatActivity implements RecipeOnClickListener {
-    private static final String URL = "https://d17h27t6h515a5.cloudfront.net/topher/2017/May/59121517_baking/baking.json";
+    public static final String URL = "https://d17h27t6h515a5.cloudfront.net/topher/2017/May/59121517_baking/baking.json";
     public static final String TAG = "chef";
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
@@ -62,8 +63,10 @@ public class MainActivity extends AppCompatActivity implements RecipeOnClickList
         View recyclerView = findViewById(R.id.item_list);
         assert recyclerView != null;
         setupRecyclerView((RecyclerView) recyclerView);
-        
-        makeJsonRequest();
+
+        Response.Listener<JSONArray> responseListener = getResponseListener();
+        Response.ErrorListener responseErrorListener = getResponseErrorListener();
+        DataHelper.makeJsonRequest(URL, responseListener, responseErrorListener);
     }
 
     @Override
@@ -96,37 +99,31 @@ public class MainActivity extends AppCompatActivity implements RecipeOnClickList
         startActivity(intent);
     }
 
-    public void makeJsonRequest() {
-        JsonArrayRequest jsonObjectRequest = new JsonArrayRequest(
-                URL,
-                responseListener,
-                responseErrorListener
-        );
+    private Response.Listener<JSONArray> getResponseListener() {
+        return new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                String json = response.toString();
+                Type listType = new TypeToken<ArrayList<Recipe>>(){}.getType();
+                recipeList = (ArrayList<Recipe>) DataHelper.jsonToCollection(json, listType);
 
-        AppController.getInstance().addToRequestQueue(jsonObjectRequest);
+                if(recipeList == null) return;
+                if(adapter == null) return;
+
+                adapter.setRecipesList(recipeList);
+
+                /** Refresh If New Data Added: not used in current case **/
+                CollectionAppWidgetProvider.sendRefreshWidgetBroadcast(getApplicationContext());
+            }
+        };
     }
 
-    private Response.Listener<JSONArray> responseListener = new Response.Listener<JSONArray>() {
-        @Override
-        public void onResponse(JSONArray response) {
-            String json = response.toString();
-            Type listType = new TypeToken<ArrayList<Recipe>>(){}.getType();
-            recipeList = (ArrayList<Recipe>) DataHelper.jsonToCollection(json, listType);
-
-            if(recipeList == null) return;
-            if(adapter == null) return;
-
-            adapter.setRecipesList(recipeList);
-
-            /** Refresh If New Data Added: not used in current case **/
-            CollectionAppWidgetProvider.sendRefreshWidgetBroadcast(getApplicationContext());
-        }
-    };
-
-    private Response.ErrorListener responseErrorListener = new Response.ErrorListener() {
-        @Override
-        public void onErrorResponse(VolleyError error) {
-            Log.e(TAG, "Volley Response Error: " + error);
-        }
-    };
+    private Response.ErrorListener getResponseErrorListener() {
+        return new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e(TAG, "Volley Response Error: " + error);
+            }
+        };
+    }
 }

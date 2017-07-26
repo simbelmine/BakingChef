@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_margin="5sp"
+    android:background="@drawable/appwidget_dark_bg"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/buttonContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/prev_button"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/widget_btn_height"
+            android:layout_weight="1"
+            android:layout_margin="@dimen/standard_margin"
+            android:background="@drawable/selector"
+            android:textColor="@color/main_txt_color"
+            android:text="@string/prev_btn" />
+        <Button
+            android:id="@+id/next_button"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/widget_btn_height"
+            android:layout_weight="1"
+            android:layout_margin="@dimen/standard_margin"
+            android:background="@drawable/selector"
+            android:textColor="@color/main_txt_color"
+            android:text="@string/next_btn" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/contentContainer"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/buttonContainer"
+        android:layout_alignParentTop="true"
+        android:orientation="horizontal"
+        android:padding="@dimen/widget_padding_container" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingBottom="5dp"
+            android:layout_weight="0.5">
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            tools:text="@string/app_name"
+            android:textColor="@color/colorPrimaryLight"
+            android:textStyle="bold"
+            android:layout_alignParentLeft="true"
+            android:textAppearance="?android:textAppearanceLarge"
+            />
+            <TextView
+                android:id="@+id/desc"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                tools:text="@string/app_name"
+                android:textColor="@color/main_txt_color"
+                android:textSize="@dimen/widget_text_regular_size"
+                android:textStyle="normal"
+                android:layout_below="@+id/title"/>
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1.5">
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/widget_img_height"
+            android:scaleType="centerCrop"
+            tools:src="@mipmap/logo" />
+        </RelativeLayout>
+
+    </LinearLayout>
+</RelativeLayout>

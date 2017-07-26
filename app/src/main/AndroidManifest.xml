@@ -3,6 +3,7 @@
     package="com.example.android.bakingchef">
 
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
     <application
         android:name=".AppController"
@@ -32,15 +33,28 @@
                 android:value="com.example.android.bakingchef.activities.MainActivity" />
         </activity>
 
-        <receiver
-            android:name=".widget.CollectionAppWidgetProvider"
-            android:label="@string/app_name" >
+
+        <receiver android:name=".widget.New_WidgetProvider" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-                <action android:name="me.indiandollar.apps.todoappcollectionwidget.app.ACTION_DATA_UPDATED" />
             </intent-filter>
-            <meta-data android:name="android.appwidget.provider"
-                android:resource="@xml/collection_widget" />
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_provider" />
+        </receiver>
+
+        <receiver
+            android:name=".widget.New_WidgetReceiver"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="com.example.android.intent.action.NEXT_WIDGET" />
+                <action android:name="com.example.android.intent.action.PREV_WIDGET"/>
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_provider" />
         </receiver>
 
         <service
