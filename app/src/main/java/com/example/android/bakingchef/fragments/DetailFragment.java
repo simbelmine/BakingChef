@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,7 +35,7 @@ public class DetailFragment extends Fragment {
     private Recipe recipe;
     private TabLayout tabLayout;
     private ViewPager viewPager;
-
+    private ViewPagerAdapter adapter;
     private TextView titleView;
 
     /**
@@ -51,6 +52,8 @@ public class DetailFragment extends Fragment {
         if (getArguments().containsKey(DetailActivity.RECIPE)) {
             recipe = getArguments().getParcelable(DetailActivity.RECIPE);
         }
+
+        setupAdapter();
     }
 
     @Override
@@ -73,11 +76,15 @@ public class DetailFragment extends Fragment {
         return rootView;
     }
 
-    private void setupViewPager() {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getActivity().getSupportFragmentManager());
+    private void setupAdapter() {
+        adapter = new ViewPagerAdapter(getActivity().getSupportFragmentManager());
         adapter.setRecipe(recipe);
         adapter.addFragment(new IngredientsFragment(), getResources().getString(R.string.fragment_ingredients_name));
         adapter.addFragment(new StepsFragment(), getResources().getString(R.string.fragment_steps_name));
+    }
+
+    private void setupViewPager() {
+        viewPager.setOffscreenPageLimit(2);
         viewPager.setAdapter(adapter);
     }
 

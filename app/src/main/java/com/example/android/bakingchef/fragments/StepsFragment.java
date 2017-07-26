@@ -12,6 +12,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SlidingPaneLayout;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +24,7 @@ import android.widget.TextView;
 
 import com.example.android.bakingchef.R;
 import com.example.android.bakingchef.activities.DetailActivity;
+import com.example.android.bakingchef.activities.MainActivity;
 import com.example.android.bakingchef.helpers.PaneUtils;
 import com.example.android.bakingchef.helpers.MyTextUtils;
 import com.example.android.bakingchef.models.Recipe;
@@ -76,7 +78,6 @@ public class StepsFragment extends Fragment implements View.OnClickListener {
             prevStepBtn.setOnClickListener(this);
         }
 
-        viewPager = (ViewPager)getActivity().findViewById(R.id.viewpager);
         if(sharedPrefs != null && sharedPrefs.contains(DetailActivity.CURRENT_STEP)) {
             step = sharedPrefs.getInt(DetailActivity.CURRENT_STEP, 0);
         }
@@ -89,6 +90,8 @@ public class StepsFragment extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_steps, container, false);
+
+        viewPager = (ViewPager)getActivity().findViewById(R.id.viewpager);
 
         if (recipe != null) {
             LinearLayout stepsLayout = (LinearLayout) rootView.findViewById(R.id.steps_fragment_container);
