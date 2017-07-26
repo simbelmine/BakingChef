@@ -33,7 +33,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-public class New_WidgetProvider extends AppWidgetProvider {
+public class WidgetProvider extends AppWidgetProvider {
     public static final String NEXT_WIDGET_ACTION = "com.example.android.intent.action.NEXT_WIDGET";
     public static final String PREV_WIDGET_ACTION = "com.example.android.intent.action.PREV_WIDGET";
     public static final String RECIPE = "RecipeData";
@@ -49,12 +49,12 @@ public class New_WidgetProvider extends AppWidgetProvider {
     }
 
     public static PendingIntent buildButtonNextPendingIntent(Context context) {
-        ++New_WidgetReceiver.clickCount;
+        ++WidgetReceiver.clickCount;
         return getButtonPendingIntent(context, NEXT_WIDGET_ACTION);
     }
 
     public static PendingIntent buildButtonPrevPendingIntent(Context context) {
-        --New_WidgetReceiver.clickCount;
+        --WidgetReceiver.clickCount;
         return getButtonPendingIntent(context, PREV_WIDGET_ACTION);
     }
 
@@ -77,7 +77,7 @@ public class New_WidgetProvider extends AppWidgetProvider {
     }
 
     public static void pushWidgetUpdate(Context context, RemoteViews remoteViews) {
-        ComponentName myWidget = new ComponentName(context, New_WidgetProvider.class);
+        ComponentName myWidget = new ComponentName(context, WidgetProvider.class);
         AppWidgetManager manager = AppWidgetManager.getInstance(context);
         manager.updateAppWidget(myWidget, remoteViews);
     }
@@ -97,8 +97,8 @@ public class New_WidgetProvider extends AppWidgetProvider {
                 // register for button event
                 remoteViews.setOnClickPendingIntent(R.id.next_button, buildButtonNextPendingIntent(context));
                 remoteViews.setOnClickPendingIntent(R.id.prev_button, buildButtonPrevPendingIntent(context));
-                int idx = New_WidgetReceiver.clickCount < 0 ||
-                        (recipeList!= null && New_WidgetReceiver.clickCount >= recipeList.size()) ? 0 : New_WidgetReceiver.clickCount;
+                int idx = WidgetReceiver.clickCount < 0 ||
+                        (recipeList!= null && WidgetReceiver.clickCount >= recipeList.size()) ? 0 : WidgetReceiver.clickCount;
                 remoteViews.setOnClickPendingIntent(R.id.title, buildButtonGoToPendingIntent(context, recipeList.get(idx)));
 
                 if(recipeList != null) {

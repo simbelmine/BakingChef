@@ -10,12 +10,12 @@ import com.example.android.bakingchef.models.Recipe;
 
 import java.util.ArrayList;
 
-import static com.example.android.bakingchef.widget.New_WidgetProvider.NEXT_WIDGET_ACTION;
-import static com.example.android.bakingchef.widget.New_WidgetProvider.PREV_WIDGET_ACTION;
-import static com.example.android.bakingchef.widget.New_WidgetProvider.RECIPE;
+import static com.example.android.bakingchef.widget.WidgetProvider.NEXT_WIDGET_ACTION;
+import static com.example.android.bakingchef.widget.WidgetProvider.PREV_WIDGET_ACTION;
+import static com.example.android.bakingchef.widget.WidgetProvider.RECIPE;
 
 
-public class New_WidgetReceiver extends BroadcastReceiver {
+public class WidgetReceiver extends BroadcastReceiver {
     public static int clickCount = 0;
     private ArrayList<Recipe> recipeList;
 
@@ -46,10 +46,10 @@ public class New_WidgetReceiver extends BroadcastReceiver {
             // re-registering for click listener
             if(action.equals(NEXT_WIDGET_ACTION))
                 remoteViews.setOnClickPendingIntent(R.id.next_button,
-                        New_WidgetProvider.buildButtonNextPendingIntent(context));
+                        WidgetProvider.buildButtonNextPendingIntent(context));
             if(action.equals(PREV_WIDGET_ACTION))
                 remoteViews.setOnClickPendingIntent(R.id.prev_button,
-                        New_WidgetProvider.buildButtonPrevPendingIntent(context));
+                        WidgetProvider.buildButtonPrevPendingIntent(context));
 
             if(recipeList != null) {
                 if(clickCount > recipeList.size()-1)
@@ -60,15 +60,15 @@ public class New_WidgetReceiver extends BroadcastReceiver {
 
             // updating view
             Recipe recipe = recipeList.get(clickCount);
-            remoteViews.setTextViewText(R.id.title, New_WidgetProvider.underlineText(recipe.getName()));
-            remoteViews.setTextViewText(R.id.desc, New_WidgetProvider.loadAllIngredients(clickCount));
-            New_WidgetProvider.loadImage(context, remoteViews, recipe.getImage());
+            remoteViews.setTextViewText(R.id.title, WidgetProvider.underlineText(recipe.getName()));
+            remoteViews.setTextViewText(R.id.desc, WidgetProvider.loadAllIngredients(clickCount));
+            WidgetProvider.loadImage(context, remoteViews, recipe.getImage());
 
 
             remoteViews.setOnClickPendingIntent(R.id.title,
-                    New_WidgetProvider.buildButtonGoToPendingIntent(context, recipe));
+                    WidgetProvider.buildButtonGoToPendingIntent(context, recipe));
 
-            New_WidgetProvider.pushWidgetUpdate(context.getApplicationContext(),
+            WidgetProvider.pushWidgetUpdate(context.getApplicationContext(),
                     remoteViews);
 
         }
