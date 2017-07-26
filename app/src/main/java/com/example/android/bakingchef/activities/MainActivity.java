@@ -1,10 +1,13 @@
 package com.example.android.bakingchef.activities;
 
 import android.content.Intent;
+import android.nfc.Tag;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
@@ -36,12 +39,18 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity implements RecipeOnClickListener {
     public static final String URL = "https://d17h27t6h515a5.cloudfront.net/topher/2017/May/59121517_baking/baking.json";
     public static final String TAG = "chef";
+    private static final String LIST_STATE_KEY = "recyclerViewState";
+    private static final String LIST_POSITION = "listItemPosition";
+    private RecyclerView.LayoutManager layoutManager;
+    private static int listPos;
+
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
      * device.
      */
     private ArrayList<Recipe> recipeList;
     private RecipesListAdapter adapter;
+    private RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,19 +60,41 @@ public class MainActivity extends AppCompatActivity implements RecipeOnClickList
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitle(getTitle());
+        recyclerView = (RecyclerView) findViewById(R.id.item_list);
 
-        View recyclerView = findViewById(R.id.item_list);
-        assert recyclerView != null;
-        setupRecyclerView((RecyclerView) recyclerView);
+        layoutManager = recyclerView.getLayoutManager();
 
-        Response.Listener<JSONArray> responseListener = getResponseListener();
-        Response.ErrorListener responseErrorListener = getResponseErrorListener();
-        DataHelper.makeJsonRequest(URL, responseListener, responseErrorListener);
+        if (savedInstanceState != null) {
+            Parcelable listState = savedInstanceState.getParcelable(LIST_STATE_KEY);
+            layoutManager.onRestoreInstanceState(listState);
+
+            int pos = savedInstanceState.getInt(LIST_POSITION, -1);
+            if(pos != -1) listPos = pos;
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        Parcelable listState = layoutManager.onSaveInstanceState();
+        outState.putParcelable(LIST_STATE_KEY, listState);
+
+        if(!(layoutManager instanceof GridLayoutManager)) {
+            int pos = ((LinearLayoutManager)layoutManager).findLastVisibleItemPosition();
+            outState.putInt(LIST_POSITION, pos);
+        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        setupRecyclerView();
+        addRecyclerVieAdapter();
+
+        Response.Listener<JSONArray> responseListener = getResponseListener();
+        Response.ErrorListener responseErrorListener = getResponseErrorListener();
+        DataHelper.makeJsonRequest(URL, responseListener, responseErrorListener);
     }
 
     public int calculateNoOfColumns() {
@@ -73,14 +104,19 @@ public class MainActivity extends AppCompatActivity implements RecipeOnClickList
         return noOfColumns;
     }
 
-    private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
-        if(layoutManager instanceof GridLayoutManager) {
-            recyclerView.setLayoutManager(new GridLayoutManager(this, calculateNoOfColumns()));
-        }
+    private void setupRecyclerView() {
+        recyclerView.setLayoutManager(layoutManager);
 
-        adapter = new RecipesListAdapter(this, null, this);
-        recyclerView.setAdapter(adapter);
+        if(layoutManager instanceof GridLayoutManager) {
+            ((GridLayoutManager) layoutManager).setSpanCount(calculateNoOfColumns());
+        }
+    }
+
+    private void addRecyclerVieAdapter() {
+        if(adapter == null) {
+            adapter = new RecipesListAdapter(this, null, this);
+            recyclerView.setAdapter(adapter);
+        }
     }
 
     @Override
@@ -103,6 +139,8 @@ public class MainActivity extends AppCompatActivity implements RecipeOnClickList
                 if(adapter == null) return;
 
                 adapter.setRecipesList(recipeList);
+
+                layoutManager.scrollToPosition(listPos);
             }
         };
     }

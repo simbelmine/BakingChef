@@ -9,7 +9,8 @@
     android:divider="?android:attr/dividerHorizontal"
     android:orientation="horizontal"
     android:showDividers="middle"
-    tools:context="com.example.android.bakingchef.activities.MainActivity">
+    tools:context="com.example.android.bakingchef.activities.MainActivity"
+    android:id="@+id/item_list_container">
 
     <!--
     This layout is a two-pane layout for the Items
