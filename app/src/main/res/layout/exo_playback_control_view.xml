@@ -4,9 +4,11 @@
     android:layout_height="wrap_content"
     android:layout_gravity="bottom"
     android:layoutDirection="ltr"
-    android:background="@color/exo_playback_bg">
+    android:background="@color/exo_playback_bg"
+    android:id="@+id/exo_player_control_container">
 
     <LinearLayout
+        android:id="@+id/exo_controls_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
@@ -29,6 +31,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/exo_text_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/exo_margin"

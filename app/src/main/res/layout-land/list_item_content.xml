@@ -6,7 +6,7 @@
     android:paddingLeft="@dimen/cards_padding"
     android:paddingTop="@dimen/cards_padding"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:id="@+id/card_main_container">
 
     <android.support.v7.widget.CardView
         xmlns:card_view="http://schemas.android.com/apk/res-auto"
@@ -16,6 +16,7 @@
         card_view:cardCornerRadius="3dp"
         >
         <RelativeLayout
+            android:id="@+id/card_info_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"

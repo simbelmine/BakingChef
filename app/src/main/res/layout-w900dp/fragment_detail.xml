@@ -5,13 +5,15 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:weightSum="5">
+    android:weightSum="5"
+    android:id="@+id/details_fragment_main_container">
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="3"
-        android:background="@color/exo_bg">
+        android:background="@color/exo_bg"
+        android:id="@+id/exo_player_main_layout">
         <ImageView
             android:id="@+id/empty_video_img"
             android:layout_width="match_parent"
