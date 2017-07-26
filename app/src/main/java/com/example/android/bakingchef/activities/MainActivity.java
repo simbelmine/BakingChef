@@ -1,7 +1,6 @@
 package com.example.android.bakingchef.activities;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -12,25 +11,18 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 
-import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.example.android.bakingchef.AppController;
 import com.example.android.bakingchef.R;
 import com.example.android.bakingchef.RecipeOnClickListener;
 import com.example.android.bakingchef.adapters.RecipesListAdapter;
 import com.example.android.bakingchef.helpers.DataHelper;
 import com.example.android.bakingchef.models.Recipe;
-import com.example.android.bakingchef.widget.CollectionAppWidgetProvider;
 import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.lang.reflect.Type;
-import java.net.URL;
 import java.util.ArrayList;
 
 /**
@@ -111,9 +103,6 @@ public class MainActivity extends AppCompatActivity implements RecipeOnClickList
                 if(adapter == null) return;
 
                 adapter.setRecipesList(recipeList);
-
-                /** Refresh If New Data Added: not used in current case **/
-                CollectionAppWidgetProvider.sendRefreshWidgetBroadcast(getApplicationContext());
             }
         };
     }
