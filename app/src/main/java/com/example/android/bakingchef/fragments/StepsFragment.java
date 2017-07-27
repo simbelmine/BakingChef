@@ -175,7 +175,7 @@ public class StepsFragment extends Fragment implements View.OnClickListener {
             return;
         Step step = steps.get(stepIdx);
         String sDesc = step.getShortDescription();
-        String lDesc = MyTextUtils.getTextFromHTML(step.getDescription());
+        String lDesc = step.getDescription();
 
         MyTextUtils.setTextStyle(getContext(), sDescView, DetailActivity.LARGE_APPEARANCE);
         sDescView.setText(sDesc);

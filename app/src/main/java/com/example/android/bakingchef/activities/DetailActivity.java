@@ -132,8 +132,6 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     private void addMainDetailFragment() {
-        Log.v(MainActivity.TAG, "add fragments in Activity....     " + isFirstTimeOfLoading);
-
         Bundle arguments = getArguments();
         DetailFragment fragment = new DetailFragment();
         fragment.setArguments(arguments);

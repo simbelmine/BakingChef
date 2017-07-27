@@ -64,7 +64,6 @@ public class DetailFragment extends Fragment {
 
         if (!PaneUtils.isTwoPane(getActivity()) && !PaneUtils.isLandscape(getActivity())) {
             if (viewPager != null) {
-                Log.v(MainActivity.TAG, "adapter: = " + adapter);
                 setupAdapter();
                 setupViewPager();
                 tabLayout.setupWithViewPager(viewPager);
@@ -79,8 +78,6 @@ public class DetailFragment extends Fragment {
     }
 
     private void setupAdapter() {
-        Log.v(MainActivity.TAG, "add Fragment in Fragment: = ");
-
         adapter.setRecipe(recipe);
         adapter.addFragment(new IngredientsFragment(), getResources().getString(R.string.fragment_ingredients_name));
         adapter.addFragment(new StepsFragment(), getResources().getString(R.string.fragment_steps_name));

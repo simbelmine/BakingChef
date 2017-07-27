@@ -9,18 +9,29 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.example.android.bakingchef.AppController;
 import com.example.android.bakingchef.activities.MainActivity;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import org.json.JSONArray;
 
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
 
 public class DataHelper {
     public static Object jsonToCollection(String json, Type type) {
         if(TextUtils.isEmpty(json)) return null;
-        Gson gson = new Gson();
-        return gson.fromJson(json, type);
+        json = fixJson(json);
+        return new GsonBuilder().create().fromJson(json, type);
+    }
+
+    private static String fixJson(String json) {
+        /** Fix for wrong character */
+        /** Couldn't find better way */
+        return json.replaceAll("\uFFFD", "\u00b0");
     }
 
     public static String collectionToJson(Object collection) {
