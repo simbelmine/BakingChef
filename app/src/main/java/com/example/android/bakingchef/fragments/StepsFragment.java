@@ -59,6 +59,8 @@ public class StepsFragment extends Fragment implements View.OnClickListener {
 
     private SlidingPaneLayout slidingPaneLayout;
 
+    private LinearLayout stepsLayout;
+
     public StepsFragment(){}
 
     @Override
@@ -94,7 +96,8 @@ public class StepsFragment extends Fragment implements View.OnClickListener {
         viewPager = (ViewPager)getActivity().findViewById(R.id.viewpager);
 
         if (recipe != null) {
-            LinearLayout stepsLayout = (LinearLayout) rootView.findViewById(R.id.steps_fragment_container);
+            stepsLayout = (LinearLayout) rootView.findViewById(R.id.steps_fragment_container);
+
             if(stepsLayout == null) return rootView;
 
              if (PaneUtils.isTwoPane(getActivity()) || PaneUtils.isLandscape(getActivity())) {
@@ -105,6 +108,7 @@ public class StepsFragment extends Fragment implements View.OnClickListener {
                 if (step > 0 && !isStepsOnFocus()) {
                     setFocusOnStep();
                 }
+
                 showStepDetails(stepsLayout, step);
             }
 
@@ -122,9 +126,7 @@ public class StepsFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        LinearLayout stepsLayout = (LinearLayout) getActivity().findViewById(R.id.steps_fragment_container);
-
-        int id = v.getId();
+          int id = v.getId();
         switch (id) {
             case R.id.button_next_step:
                 if(!isStepsOnFocus()) {
@@ -158,17 +160,6 @@ public class StepsFragment extends Fragment implements View.OnClickListener {
         }
 
         saveCurrentStep();
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        if(exoPlayer != null) {
-            if (exoPlayer.getPlaybackState() != PlaybackState.STATE_PLAYING) {
-                exoPlayer.seekTo(0);
-            }
-            pausePlayer();
-        }
     }
 
     private void showStepDetailsTwoPane(int stepIdx) {
@@ -206,15 +197,20 @@ public class StepsFragment extends Fragment implements View.OnClickListener {
     }
 
     private void setFocusOnStep() {
+        if(viewPager == null)
+            return;
         viewPager.setCurrentItem(1);
     }
 
     private boolean isStepsOnFocus() {
+        if(viewPager == null)
+            return false;
         return viewPager.getCurrentItem() == 1;
     }
 
     private void showStepDetails(LinearLayout stepsLayout, int stepIdx) {
         List<Step> steps = recipe.getSteps();
+
         if (steps == null || steps.size() == 0)
             return;
         int allSteps = steps.size();

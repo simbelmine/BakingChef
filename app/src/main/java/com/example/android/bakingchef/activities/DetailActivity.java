@@ -40,7 +40,8 @@ public class DetailActivity extends AppCompatActivity {
     public static final String LARGE_APPEARANCE = "LargeTextAppearance";
 
     private SharedPreferences sharedPrefs;
-    Recipe recipe;
+    private Recipe recipe;
+    private boolean isFirstTimeOfLoading;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +51,7 @@ public class DetailActivity extends AppCompatActivity {
 
         setupActionBar();
 
-                // savedInstanceState is non-null when there is fragment state
+        // savedInstanceState is non-null when there is fragment state
         // saved from previous configurations of this activity
         // (e.g. when rotating the screen from portrait to landscape).
         // In this case, the fragment will automatically be re-added
@@ -63,14 +64,16 @@ public class DetailActivity extends AppCompatActivity {
         recipe = getRecipe();
 
         if (savedInstanceState == null) {
-
+            isFirstTimeOfLoading = true;
+            addMainDetailFragment();
+            isFirstTimeOfLoading = false;
         }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        setFragments(true);
+        setDetailsFragments();
     }
 
     @Override
@@ -128,30 +131,29 @@ public class DetailActivity extends AppCompatActivity {
         return null;
     }
 
-    private void setFragments(boolean isFirstTime) {
-        Bundle arguments = new Bundle();
-        arguments.putParcelable(RECIPE, recipe);
+    private void addMainDetailFragment() {
+        Log.v(MainActivity.TAG, "add fragments in Activity....     " + isFirstTimeOfLoading);
 
+        Bundle arguments = getArguments();
         DetailFragment fragment = new DetailFragment();
         fragment.setArguments(arguments);
-        if(isFirstTime) {
+        if(isFirstTimeOfLoading) {
             addFragment(fragment, R.id.details_container_layout);
         }
         else {
             replaceFragment(fragment, R.id.details_container_layout);
         }
 
+    }
 
-        Log.v(MainActivity.TAG, "ROTATE...  " + getResources().getConfiguration().orientation);
+    private void setDetailsFragments() {
+        if(PaneUtils.isTwoPane(this) || PaneUtils.isTablet(this) || PaneUtils.isLandscape(this)) {
+            Log.v(MainActivity.TAG, "LANDSCAPE Fragments.");
 
-
-        if(PaneUtils.isTwoPane(this) && PaneUtils.isTablet(this) || getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                    Log.v(MainActivity.TAG, "ROTATE...");
-
-
+            Bundle arguments = getArguments();
             IngredientsFragment ingredientsFragment = new IngredientsFragment();
             ingredientsFragment.setArguments(arguments);
-            if(isFirstTime) {
+            if(isFirstTimeOfLoading) {
                 addFragment(ingredientsFragment, R.id.ingredients_container);
             }
             else {
@@ -160,7 +162,7 @@ public class DetailActivity extends AppCompatActivity {
 
             StepsFragment stepsFragment = new StepsFragment();
             stepsFragment.setArguments(arguments);
-            if(isFirstTime) {
+            if(isFirstTimeOfLoading) {
                 addFragment(stepsFragment, R.id.steps_container);
             }
             else {
@@ -179,5 +181,12 @@ public class DetailActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction()
                 .replace(containerId, fragment, DETAILS_FRAGMENT)
                 .commit();
+    }
+
+    private Bundle getArguments() {
+        Bundle arguments = new Bundle();
+        arguments.putParcelable(RECIPE, recipe);
+
+        return arguments;
     }
 }
