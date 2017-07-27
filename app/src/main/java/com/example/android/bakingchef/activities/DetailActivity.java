@@ -63,16 +63,14 @@ public class DetailActivity extends AppCompatActivity {
         recipe = getRecipe();
 
         if (savedInstanceState == null) {
-            setFragments(true);
+
         }
     }
 
     @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        setContentView(R.layout.activity_detail);
-
-        setFragments(false);
+    protected void onResume() {
+        super.onResume();
+        setFragments(true);
     }
 
     @Override
@@ -144,7 +142,13 @@ public class DetailActivity extends AppCompatActivity {
         }
 
 
+        Log.v(MainActivity.TAG, "ROTATE...  " + getResources().getConfiguration().orientation);
+
+
         if(PaneUtils.isTwoPane(this) && PaneUtils.isTablet(this) || getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                    Log.v(MainActivity.TAG, "ROTATE...");
+
+
             IngredientsFragment ingredientsFragment = new IngredientsFragment();
             ingredientsFragment.setArguments(arguments);
             if(isFirstTime) {

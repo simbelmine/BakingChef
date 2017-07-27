@@ -97,11 +97,11 @@ public class StepsFragment extends Fragment implements View.OnClickListener {
             LinearLayout stepsLayout = (LinearLayout) rootView.findViewById(R.id.steps_fragment_container);
             if(stepsLayout == null) return rootView;
 
-
-            if (PaneUtils.isTwoPane(getActivity()) || PaneUtils.isLandscape(getActivity())) {
+             if (PaneUtils.isTwoPane(getActivity()) || PaneUtils.isLandscape(getActivity())) {
                 addStepsViews(stepsLayout);
                 showStepDetailsTwoPane(step);
-            } else {
+            }
+            else {
                 if (step > 0 && !isStepsOnFocus()) {
                     setFocusOnStep();
                 }
@@ -174,6 +174,7 @@ public class StepsFragment extends Fragment implements View.OnClickListener {
     private void showStepDetailsTwoPane(int stepIdx) {
         LinearLayout stepsDetailsContainer = (LinearLayout) getActivity().findViewById(R.id.steps_details_container);
         if(stepsDetailsContainer == null) return;
+
         TextView sDescView = new TextView(getContext());
         TextView lDescView = new TextView(getContext());
         removeLayoutViews(stepsDetailsContainer);
@@ -374,7 +375,7 @@ public class StepsFragment extends Fragment implements View.OnClickListener {
     }
 
     public static void pausePlayer() {
-        /** Pause the Player when orientation happend **/
+        /** Pause the Player when orientation happened **/
         if(exoPlayer != null)
             exoPlayer.setPlayWhenReady(false);
     }

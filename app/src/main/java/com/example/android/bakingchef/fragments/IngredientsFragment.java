@@ -75,8 +75,9 @@ public class IngredientsFragment extends Fragment implements CompoundButton.OnCh
     }
 
     @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
         if(checkedIngredientsSet != null) {
             String json = DataHelper.collectionToJson(checkedIngredientsSet);
             sharedPrefs.edit().putString(DetailActivity.CHECKED_INGREDIENTS, json).commit();
