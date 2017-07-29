@@ -50,7 +50,7 @@ public class ListFactory implements RemoteViewsService.RemoteViewsFactory {
         final RemoteViews remoteView = new RemoteViews(
                 context.getPackageName(), R.layout.widget_list_item);
 
-        if(position >= 0 || position < list.length) {
+        if(position >= 0 && position < list.length) {
             String s = list[position];
             remoteView.setTextViewText(R.id.widget_item_content, s);
         }
