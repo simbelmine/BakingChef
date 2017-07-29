@@ -9,4 +9,6 @@
 
     <string name="fragment_ingredients_name">Ingredients</string>
     <string name="fragment_steps_name">Steps</string>
+
+    <string name="widget_loading">Loading...</string>
 </resources>

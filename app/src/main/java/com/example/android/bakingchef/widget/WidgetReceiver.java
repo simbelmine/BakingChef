@@ -60,17 +60,12 @@ public class WidgetReceiver extends BroadcastReceiver {
 
             // updating view
             Recipe recipe = recipeList.get(clickCount);
-            remoteViews.setTextViewText(R.id.title, WidgetProvider.underlineText(recipe.getName()));
-            remoteViews.setTextViewText(R.id.desc, WidgetProvider.loadAllIngredients(clickCount));
-            WidgetProvider.loadImage(context, remoteViews, recipe.getImage());
-
-
-            remoteViews.setOnClickPendingIntent(R.id.title,
-                    WidgetProvider.buildButtonGoToPendingIntent(context, recipe));
-
-            WidgetProvider.pushWidgetUpdate(context.getApplicationContext(),
-                    remoteViews);
-
+            if(recipe != null) {
+                remoteViews.setOnClickPendingIntent(R.id.title,
+                        WidgetProvider.buildLinkGoToPendingIntent(context, recipe));
+                WidgetProvider.updateWidget(recipe, remoteViews);
+                ListFactory.updateList(WidgetProvider.getIngredientsData(recipe));
+            }
         }
     }
 }

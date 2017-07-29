@@ -57,5 +57,12 @@
                 android:resource="@xml/widget_provider" />
         </receiver>
 
+
+
+
+        <service
+            android:name=".widget.WidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
+
     </application>
 </manifest>
