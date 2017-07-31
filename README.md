@@ -20,9 +20,9 @@ Some of the UI widgets and design patterns used in the mobile app include:
 
 
 # Pre-requisites
-Android SDK 25
-Android Build Tools v25.3.1
-Android Support Repository
+* Android SDK 25
+* Android Build Tools v25.3.1
+* Android Support Repository
 
 
 # Screenshots
